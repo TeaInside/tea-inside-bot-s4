@@ -1,0 +1,7 @@
+*.so
+*.swo
+*.swp
+*.tmp
+*.lock
+/vendor/
+/.phpintel/
