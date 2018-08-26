@@ -5,3 +5,5 @@
 *.lock
 /vendor/
 /.phpintel/
+/config/line/main.php
+/config/telegram/main.php
