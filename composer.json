@@ -1,0 +1,22 @@
+{
+    "name": "ammarfaizi2/bot-s4",
+    "description": "Tea Inside Bot S4",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ammar Faizi",
+            "email": "ammarfaizi2@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "files": [
+            "bootstrap/init.php"
+        ],
+        "psr-4": {
+            "Bot\\": "src/Bot/"
+        }
+    }
+}
