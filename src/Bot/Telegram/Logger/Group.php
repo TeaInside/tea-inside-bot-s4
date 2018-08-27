@@ -92,7 +92,7 @@ class Group implements LoggerInterface
 	private function addNewGroup(): void
 	{
 		$now = date("Y-m-d H:i:s");
-		$st = $this->pdo->prepare("INSERT INTO `groups` (`id`, `name`, `username`, `link`, `photo`, `msg_count`, `created_at`, `updated_at`, `last_seen`) VALUES (:id, :name, :username, :link, :photo, :msg_count, :created_at, :updated_at);");
+		$st = $this->pdo->prepare("INSERT INTO `groups` (`id`, `name`, `username`, `link`, `photo`, `msg_count`, `created_at`, `updated_at`) VALUES (:id, :name, :username, :link, :photo, :msg_count, :created_at, :updated_at);");
 		$st->execute(
 			[
 				":id" => $this->data["group_id"],
