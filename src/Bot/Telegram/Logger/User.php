@@ -81,12 +81,12 @@ class User implements LoggerInterface
 			$query .= "`group_message_count`=`group_message_count`+1, ";
 		}
 		if (! empty($data)) {
-			$query .= "`updated_at`=:updated_at, ";
-			$data[":updated_at"] = $this->data["_now"];
 			$this->addUserHistory();
 		}
-		$query .= "`last_seen`=:last_seen ";
-		$data[":last_seen"] = $now;
+
+		$query .= "`updated_at`=:updated_at, ";
+		$data[":updated_at"] = $this->data["_now"];
+		
 		$query .= "WHERE `id`=:id LIMIT 1;";
 		$data[":id"] = $this->data["user_id"];
 		$st = $this->pdo->prepare($query);
