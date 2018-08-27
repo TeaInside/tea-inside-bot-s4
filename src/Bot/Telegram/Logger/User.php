@@ -84,7 +84,7 @@ class User implements LoggerInterface
 			$this->addUserHistory();
 		}
 
-		$query .= "`updated_at`=:updated_at, ";
+		$query .= "`updated_at`=:updated_at ";
 		$data[":updated_at"] = $this->data["_now"];
 		
 		$query .= "WHERE `id`=:id LIMIT 1;";
