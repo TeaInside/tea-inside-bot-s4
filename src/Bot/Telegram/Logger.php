@@ -3,6 +3,7 @@
 namespace Bot\Telegram;
 
 use Bot\Telegram\Logger\User as UserLogger;
+use Bot\Telegram\Logger\Group as GroupLogger;
 use Bot\Telegram\Contracts\LoggerInterface;
 
 /**
