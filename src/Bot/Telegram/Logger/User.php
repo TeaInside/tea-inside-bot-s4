@@ -102,7 +102,7 @@ class User implements LoggerInterface
 		$isPrivate = $this->data["chat_type"] === "private";
 
 		$st = $this->pdo->prepare(
-			"INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `photo`, `private_message_count`, `group_message_count`, `created_at`, `updated_at`, `last_seen`) VALUES (:id, :first_name, :last_name, :username, :photo, :private_message_count, :group_message_count, :created_at, :updated_at, :last_seen);"
+			"INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `photo`, `private_message_count`, `group_message_count`, `created_at`, `updated_at`) VALUES (:id, :first_name, :last_name, :username, :photo, :private_message_count, :group_message_count, :created_at, :updated_at);"
 		);
 		$st->execute(
 			[
@@ -114,8 +114,7 @@ class User implements LoggerInterface
 				":private_message_count" => ($isPrivate ? 1 : 0),
 				":group_message_count" => ($isPrivate ? 0 : 1),
 				":created_at" => $this->data["_now"],
-				":updated_at" => null,
-				":last_seen" => $this->data["_now"]
+				":updated_at" => null
 			]
 		);
 
