@@ -1,0 +1,29 @@
+<?php
+
+define("TOKEN", "... bot token ...");
+define("BOT_USERNAME", "MyIceTea_Bot");
+define("SUDOERS", 
+	[
+		243692601, // @ammarfaizi2
+	]
+);
+define("GLOBAL_ADMINS", 
+	array_merge(
+		SUDOERS,
+		[
+
+		]
+	)
+);
+
+define("PUBLIC_URL", "https://webhook-a2.teainside.tech");
+define("PUBLIC_PATH", BASEPATH."/public");
+define("STORAGE_PATH", BASEPATH."/storage");
+define("LOG_PATH", BASEPATH."/logs");
+
+define("SHELL_DEFAULT_USER_LIMIT", 20);
+define("USE_NETWORK_IN_ISOLATOR", false);
+define("ISOLATOR_MAPS", BASEPATH."/storage/isolator/maps");
+define("ISOLATOR_USER_TMP", BASEPATH."/storage/isolator/tmp");
+define("ISOLATOR_USER_ETC", BASEPATH."/storage/isolator/etc");
+define("ISOLATOR_USER_HOME", BASEPATH."/storage/isolator/home");
