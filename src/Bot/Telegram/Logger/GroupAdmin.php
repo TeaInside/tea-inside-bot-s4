@@ -52,8 +52,8 @@ class GroupAdmin implements LoggerInterface
 	 */
 	public function run(): void
 	{
-		var_dump($this->result);
-		
+		var_dump($this->reset);
+
 		if ($this->reset) {
 			$this->pdo->prepare(
 				"DELETE FROM `group_admin` WHERE `group_id`=:group_id;"
