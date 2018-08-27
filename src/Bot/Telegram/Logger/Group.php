@@ -62,7 +62,7 @@ class Group implements LoggerInterface
 		$query = "UPDATE `groups` SET ";
 		$data = [];
 
-		if ($this->data["group_name"] !== $g["group_name"]) {
+		if ($this->data["group_name"] !== $g["name"]) {
 			$query .= "`name`=:name, ";
 			$data[":name"] = $this->data["group_name"];
 		}
