@@ -83,7 +83,7 @@ class Group implements LoggerInterface
 		if ($g["msg_count"] % 10 === 0) {
 			$st = new GroupAdmin($this->data);
 			$st->run = true;
-			$st->reset = true;
+			$st->reset = false;
 			$st->run();
 		}
 

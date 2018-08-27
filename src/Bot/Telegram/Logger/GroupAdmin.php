@@ -34,7 +34,7 @@ class GroupAdmin implements LoggerInterface
 	/**
 	 * @var bool
 	 */
-	public $result = true;
+	public $reset = true;
 
 	/**
 	 * @param \Bot\Telegram\Data $data
@@ -52,6 +52,7 @@ class GroupAdmin implements LoggerInterface
 	 */
 	public function run(): void
 	{
+		var_dump($this->result);
 		
 		if ($this->reset) {
 			$this->pdo->prepare(
