@@ -42,7 +42,7 @@ class Group implements LoggerInterface
 	public function run(): void
 	{
 		$st = $this->pdo->prepare(
-			"SELECT `name`,`username`,`link`,`photo` FROM `groups` WHERE `id` = :id LIMIT 1;"
+			"SELECT `name`,`username`,`link`,`photo`,`msg_count` FROM `groups` WHERE `id` = :id LIMIT 1;"
 		);
 		$st->execute([":id" => $this->data["group_id"]]);
 
@@ -80,6 +80,13 @@ class Group implements LoggerInterface
 		$query .= "`updated_at`=:updated_at ";
 		$data[":updated_at"] = $this->data["_now"];
 
+		if ($g["msg_count"] % 10 === 0) {
+			$st = new GroupAdmin($this->data);
+			$st->run = true;
+			$st->reset = true;
+			$st->run();
+		}
+
 		$query .= "WHERE `id`=:id LIMIT 1;";
 		$data[":id"] = $this->data["group_id"];
 		$st = $this->pdo->prepare($query);
@@ -108,9 +115,10 @@ class Group implements LoggerInterface
 		// $st = $this->pdo->prepare("INSERT INTO `group_settings` (`group_id`) VALUES (:group_id);");
 		// $st->execute([":group_id" => $this->data["group_id"]]);
 		$this->addGroupHistory();
-		// $st = new AdminLogger($this->data);
-		// $st->run = 1;
-		// $st->run();
+		$st = new GroupAdmin($this->data);
+		$st->run = true;
+		$st->reset = false;
+		$st->run();
 	}
 
 	/**
