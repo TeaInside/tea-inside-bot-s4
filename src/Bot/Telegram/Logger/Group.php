@@ -13,7 +13,7 @@ use Bot\Telegram\Contracts\LoggerInterface;
  * @package \Bot\Telegram
  * @version 4.0
  */
-class User implements LoggerInterface
+class Group implements LoggerInterface
 {
 	/**
 	 * @var \Bot\Telegram\Data
