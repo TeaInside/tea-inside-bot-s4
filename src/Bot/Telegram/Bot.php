@@ -17,11 +17,11 @@ final class Bot
 	public function __construct(string $json)
 	{
 		$this->data = new Data($json);
-		print Exe::sendMessage(
-			[
-				"text" => "test",
-				"chat_id" => $this->data["chat_id"]
-			]
-		)["out"];
+		// print Exe::sendMessage(
+		// 	[
+		// 		"text" => "test",
+		// 		"chat_id" => $this->data["chat_id"]
+		// 	]
+		// )["out"];
 	}
 }
