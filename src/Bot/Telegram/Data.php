@@ -42,6 +42,7 @@ final class Data implements ArrayAccess, JsonSerializable
 			);
 		}
 		$this->buildContainer();
+		$this["_now"] = date("Y-m-d H:i:s");
 	}
 
 	/**
