@@ -19,11 +19,6 @@ final class Logger
 	private $data;
 
 	/**
-	 * @var \PDO
-	 */
-	private $pdo;
-
-	/**
 	 * @param string $json
 	 *
 	 * Constructor.
@@ -50,7 +45,6 @@ final class Logger
 	 */
 	private function groupMessageLogger(): void
 	{
-		$this->pdo = DB::pdo();
 		$st = new UserLogger($this->data);
 		$st->run();
 	}
