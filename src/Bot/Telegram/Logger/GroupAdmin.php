@@ -144,7 +144,7 @@ class GroupAdmin implements LoggerInterface
 		);
 		$st->execute(
 			[
-				":id" => $admin["user_id"],
+				":id" => $admin["id"],
 				":first_name" => $admin["first_name"],
 				":last_name" => $admin["last_name"],
 				":username" => $admin["username"],
@@ -168,7 +168,7 @@ class GroupAdmin implements LoggerInterface
 		$st = $this->pdo->prepare("INSERT INTO `user_history` (`user_id`, `first_name`, `last_name`, `username`, `photo`, `created_at`) VALUES (:user_id, :first_name, :last_name, :username, :photo, :created_at);");
 		$st->execute(
 			[
-				":user_id" => $admin["user_id"],
+				":user_id" => $admin["id"],
 				":first_name" => $admin["first_name"],
 				":last_name" => $admin["last_name"],
 				":username" => $admin["username"],
