@@ -49,6 +49,8 @@ final class Logger
 	{
 		$st = new UserLogger($this->data);
 		$st->run();
+		$st = new GroupLogger($this->data);
+		$st->run();
 	}
 
 	/**
