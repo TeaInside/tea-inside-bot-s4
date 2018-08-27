@@ -4,6 +4,7 @@ namespace Bot\Telegram\Logger;
 
 use DB;
 use PDO;
+use Bot\Telegram\Data;
 use Bot\Telegram\Contracts\LoggerInterface;
 
 /**
