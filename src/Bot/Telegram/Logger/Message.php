@@ -82,7 +82,7 @@ class Message implements LoggerInterface
 
 		$st->execute(
 			[
-				":group_messages_id" => $group_messages_id,
+				":group_messages_id" => $group_message_id,
 				":text" => $this->data["text"],
 				":file_id" => null,
 				":type" => $this->data["msg_type"]
