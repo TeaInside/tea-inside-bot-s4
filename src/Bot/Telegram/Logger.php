@@ -4,6 +4,7 @@ namespace Bot\Telegram;
 
 use Bot\Telegram\Logger\User as UserLogger;
 use Bot\Telegram\Logger\Group as GroupLogger;
+use Bot\Telegram\Logger\Message as MessageLogger;
 use Bot\Telegram\Contracts\LoggerInterface;
 
 /**
@@ -51,6 +52,8 @@ final class Logger
 		$st = new UserLogger($this->data);
 		$st->run();
 		$st = new GroupLogger($this->data);
+		$st->run();
+		$st = new MessageLogger($this->data);
 		$st->run();
 	}
 

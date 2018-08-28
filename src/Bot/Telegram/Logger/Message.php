@@ -13,7 +13,7 @@ use Bot\Telegram\Contracts\LoggerInterface;
  * @package \Bot\Telegram
  * @version 4.0
  */
-class Group implements LoggerInterface
+class Message implements LoggerInterface
 {
 	/**
 	 * @var \Bot\Telegram\Data
@@ -36,7 +36,10 @@ class Group implements LoggerInterface
 		$this->pdo  = DB::pdo();		
 	}
 
-	public function run()
+	/**
+	 * @return void
+	 */
+	public function run(): void
 	{
 		if (in_array($this->data["msg_type"], ["text"])) {
 			if ($this->data["chat_type"] === "group") {
@@ -45,7 +48,10 @@ class Group implements LoggerInterface
 		}
 	}
 
-	private function groupLogger()
+	/**
+	 * @return void
+	 */
+	private function groupLogger(): void
 	{
 		$st = $this->pdo->prepare(
 			"INSERT INTO `group_messages` (`group_id`, `user_id`, `telegram_msg_id`, `reply_to_msg_id`, `created_at`, `updated_at`)
