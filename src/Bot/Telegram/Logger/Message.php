@@ -44,6 +44,8 @@ class Message implements LoggerInterface
 		if (in_array($this->data["msg_type"], ["text"])) {
 			if ($this->data["chat_type"] === "group") {
 				$this->groupLogger();
+			} elseif ($this->data["chat_type"] === "private") {
+				$this->privateLogger();
 			}
 		}
 	}
@@ -83,6 +85,41 @@ class Message implements LoggerInterface
 		$st->execute(
 			[
 				":group_message_id" => $group_message_id,
+				":text" => $this->data["text"],
+				":file_id" => null,
+				":type" => $this->data["msg_type"]
+			]
+		);
+	}
+
+	/**
+	 * @return void
+	 */
+	private function privateLogger(): void
+	{
+		$st = $this->pdo->prepare(
+			"INSERT INTO `private_messages` (`user_id`, `telegram_msg_id`, `reply_to_msg_id`, `created_at`, `updated_at`)
+			VALUES (:user_id, :telegram_msg_id, :reply_to_msg_id, :created_at, :updated_at);"
+		);
+
+		$st->execute(
+			[
+				":user_id" => $this->data["user_id"],
+				":telegram_msg_id" => $this->data["msg_id"],
+				":reply_to_msg_id7"
+			]
+		);
+
+		$private_message_id = $this->pdo->lastInsertId();
+
+		$st = $this->pdo->prepare(
+			"INSERT INTO `private_messages_data` (`private_message_id`, `text`, `file_id`, `type`)
+			VALUES (:private_message_id, :text, :file_id, :type);"
+		);
+
+		$st->execute(
+			[
+				":private_message_id" => $private_message_id,
 				":text" => $this->data["text"],
 				":file_id" => null,
 				":type" => $this->data["msg_type"]

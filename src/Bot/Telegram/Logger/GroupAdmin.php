@@ -139,7 +139,7 @@ class GroupAdmin implements LoggerInterface
 	private function addNewUser(array $admin): void
 	{
 		$st = $this->pdo->prepare(
-			"INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `photo`, `private_message_count`, `group_message_count`, `created_at`, `updated_at`) VALUES (:id, :first_name, :last_name, :username, :photo, :private_message_count, :group_message_count, :created_at, :updated_at);"
+			"INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `photo`, `is_bot`, `private_message_count`, `group_message_count`, `created_at`, `updated_at`) VALUES (:id, :first_name, :last_name, :username, :photo, :is_bot, :private_message_count, :group_message_count, :created_at, :updated_at);"
 		);
 		$st->execute(
 			[
@@ -148,6 +148,7 @@ class GroupAdmin implements LoggerInterface
 				":last_name" => $admin["last_name"],
 				":username" => $admin["username"],
 				":photo" => null,
+				":is_bot" => ((isset($admin["is_bot"]) && $admin["is_bot"]) ? 1 : 0),
 				":private_message_count" => 0,
 				":group_message_count" => 0,
 				":created_at" => $this->data["_now"],
