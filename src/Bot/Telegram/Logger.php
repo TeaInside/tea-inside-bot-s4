@@ -62,5 +62,9 @@ final class Logger
 	 */
 	private function privateMessageLogger(): void
 	{
+		$st = new UserLogger($this->data);
+		$st->run();
+		$st = new MessageLogger($this->data);
+		$st->run();
 	}
 }

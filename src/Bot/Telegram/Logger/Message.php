@@ -42,6 +42,7 @@ class Message implements LoggerInterface
 	public function run(): void
 	{
 		if (in_array($this->data["msg_type"], ["text"])) {
+			var_dump($this->data["chat_type"]);
 			if ($this->data["chat_type"] === "group") {
 				$this->groupLogger();
 			} elseif ($this->data["chat_type"] === "private") {
