@@ -35,7 +35,7 @@ final class Logger
 	 */
 	public function run(): void
 	{
-		if (in_array($this->data["msg_type"], ["text"])) {
+		if (in_array($this->data["msg_type"], ["text", "photo"])) {
 			if ($this->data["chat_type"] === "group") {
 				$this->groupMessageLogger();
 			} else {
