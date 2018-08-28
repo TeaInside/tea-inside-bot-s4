@@ -106,7 +106,13 @@ class Message implements LoggerInterface
 			[
 				":user_id" => $this->data["user_id"],
 				":telegram_msg_id" => $this->data["msg_id"],
-				":reply_to_msg_id7"
+				":reply_to_msg_id" => (
+					isset($this->data->in["message"]["reply_to_message"]["message_id"]) ?
+						$this->data->in["message"]["reply_to_message"]["message_id"] :
+							null
+				),
+				"created_at" => $this->data["_now"],
+				"updated_at" => null
 			]
 		);
 
