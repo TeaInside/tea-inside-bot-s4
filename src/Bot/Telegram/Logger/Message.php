@@ -208,7 +208,7 @@ class Message implements LoggerInterface
 				        		":absolute_hash" => ($sha1."_".$md5),
 				        		":hit_count" => 1,
 				        		":description" => null,
-				        		":created_at" => $this->date["_now"],
+				        		":created_at" => $this->data["_now"],
 				        		":updated_at" => null
 				        	]
 				        );
