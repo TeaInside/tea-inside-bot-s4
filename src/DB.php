@@ -43,6 +43,11 @@ final class DB
 		return self::getInstance()->pdo;
 	}
 
+	public function __destruct()
+	{
+		unset($this->pdo);
+	}
+
 	/**
 	 * @return self
 	 */
