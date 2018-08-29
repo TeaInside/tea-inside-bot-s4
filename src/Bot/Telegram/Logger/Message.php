@@ -156,7 +156,7 @@ class Message implements LoggerInterface
 					$p = $this->data['photo'][count($this->data['photo']) - 1];
 					$telegram_file_id = $p['file_id'];
 					$st = $this->pdo->prepare(
-						"SELECT `id` FROM `files` WHERE `telegram_file_id`=:telegram_file_id LIMIT 1;"
+						"SELECT `id`,`absolute_hash` FROM `files` WHERE `telegram_file_id`=:telegram_file_id LIMIT 1;"
 					);
 					$st->execute([":telegram_file_id" => $telegram_file_id]);
 					if ($st = $st->fetch(PDO::FETCH_NUM)) {
@@ -190,6 +190,24 @@ class Message implements LoggerInterface
 				        is_dir(STORAGE_PATH."/files") or mkdir(STORAGE_PATH."/files");
 
 				        $filename = ($sha1 = sha1($binary))."_".($md5 = md5($binary)).".jpg";
+						$absolute_hash = $sha1."_".$md5;
+
+				        $st = $this->pdo->prepare(
+							"SELECT `id` FROM `files` WHERE `absolute_hash`=:absolute_hash LIMIT 1;"
+						);
+						$st->execute([":absolute_hash" => $absolute_hash]);
+						if ($st = $st->fetch(PDO::FETCH_NUM)) {
+							$this->pdo->prepare(
+								"UPDATE `files` SET `hit_count`=`hit_count`+1, `updated_at`=:updated_at WHERE `absolute_hash`=:absolute_hash LIMIT 1;"
+							)->execute(
+								[
+									":updated_at" => $this->data["_now"],
+									":absolute_hash" => $absolute_hash
+								]
+							);
+							return $st[0];
+						}
+
 				        $handle = fopen(STORAGE_PATH."/files/".$filename, "w");
 				        flock($handle, LOCK_EX);
 				        fwrite($handle, $binary);
@@ -206,7 +224,7 @@ class Message implements LoggerInterface
 				        		":telegram_file_id" => $telegram_file_id,
 				        		":md5_checksum"  => $md5,
 				        		":sha1_checksum" => $sha1,
-				        		":absolute_hash" => ($sha1."_".$md5),
+				        		":absolute_hash" => $absolute_hash,
 				        		":hit_count" => 1,
 				        		":description" => null,
 				        		":created_at" => $this->data["_now"],
