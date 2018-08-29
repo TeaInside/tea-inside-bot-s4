@@ -32,7 +32,8 @@ final class Response
 			Exe::sendMessage(
 				[
 					"text" => "There is no data stored for this user.",
-					"chat_id" => $this->data["chat_id"]
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
 				]
 			);
 		}
