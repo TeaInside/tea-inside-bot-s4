@@ -179,7 +179,7 @@ class Kulgram extends ResponseFoundation
 		}
 
 		if (file_exists($this->path."/info.json")) {
-			$this->handle = fopen($this->path, "r");
+			$this->handle = fopen($this->path."/info.json", "r");
 			flock($this->handle, LOCK_EX);
 			$this->info = json_decode(file_get_contents($this->path."/info.json"), true);
 			if (! isset($this->info["status"], $this->info["chat_id"], $this->info["count"])) {
@@ -190,7 +190,7 @@ class Kulgram extends ResponseFoundation
 				];
 			}
 		} else {
-			$this->handle = fopen($this->path, "w");
+			$this->handle = fopen($this->path."/info.json", "w");
 			flock($this->handle, LOCK_EX);
 			$this->info = [
 				"status" => "sleep",

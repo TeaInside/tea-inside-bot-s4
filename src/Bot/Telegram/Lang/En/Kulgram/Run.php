@@ -8,7 +8,7 @@ namespace Bot\Telegram\Lang\En\Kulgram;
  * @package \Bot\Telegram\Lang\En\Kulgram
  * @version 4.0
  */
-class Usage
+class Run
 {
 	static $list = [
 		"init_ok" => 
