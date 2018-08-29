@@ -45,7 +45,7 @@ final class Response
 					if (is_string($route[1])) {
 						
 					} elseif ($route[1] instanceof Closure) {
-						if ($route[1](...$route[1])) {
+						if ($route[1](...$route[0][1])) {
 							break;		
 						}
 					}
