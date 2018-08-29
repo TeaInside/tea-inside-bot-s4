@@ -40,7 +40,7 @@ final class Response
 		$this->buildRoutes();
 		foreach ($this->routes as $key => $route) {
 			$route[0] = $route[0]();
-			if (isset($route[0], $route[1]) && is_array($route[1])) {
+			if (isset($route[0], $route[0][1]) && is_array($route[0][1])) {
 				if ($route[0][0]) {
 					if (is_string($route[1])) {
 						
