@@ -17,6 +17,9 @@ final class Bot
 	public function __construct(string $json)
 	{
 		$this->data = new Data($json);
+		$st = new Response($this->data);
+		$st->run();
+		
 		// print Exe::sendMessage(
 		// 	[
 		// 		"text" => "test",
