@@ -16,13 +16,13 @@ class Error
 		"init_no_author" => "krec: fatal error: You need to provide the author.",
 		"init_idle" => "Could not initialize system record because there is an idle session. Please cancel or finish this session!
 
-**Current Session**
+<b>Current Session</b>
 Session ID	: {{session_id}}
 Title		: {{title}}
 Author		: {{author}}",
 		"init_recording" => "Could not initialize the system record because there is an active session. Please stop this session first!
 
-**Current Session**
+<b>Current Session</b>
 Session ID	: {{session_id}}
 Title		: {{title}}
 Author		: {{author}}",
