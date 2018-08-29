@@ -195,7 +195,7 @@ class Message implements LoggerInterface
 				        fwrite($handle, $binary);
 				        fclose($handle);
 
-				        unset($binary, $handle, $md5, $sha1, $filename, $ch, $p, $a, $st);
+				        unset($binary, $handle, $filename, $ch, $p, $a, $st);
 
 				        $this->pdo->prepare(
 				        	"INSERT INTO `files` (`type`, `telegram_file_id`, `md5_checksum`, `sha1_checksum`, `absolute_hash`, `hit_count`, `description`, `created_at`, `updated_at`)
