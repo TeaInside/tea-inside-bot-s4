@@ -11,20 +11,21 @@ namespace Bot\Telegram;
 final class Bot
 {
 	/**
-	 * 
+	 * @param string $json
 	 *
+	 * Constructor
 	 */
 	public function __construct(string $json)
 	{
 		$this->data = new Data($json);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function run(): void
+	{
 		$st = new Response($this->data);
 		$st->run();
-		
-		// print Exe::sendMessage(
-		// 	[
-		// 		"text" => "test",
-		// 		"chat_id" => $this->data["chat_id"]
-		// 	]
-		// )["out"];
 	}
 }
