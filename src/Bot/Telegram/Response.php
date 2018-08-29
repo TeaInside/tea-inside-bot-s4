@@ -27,6 +27,8 @@ final class Response
 
 	/**
 	 * @param \Bot\Telegtram\Data $data
+	 *
+	 * Constructor.
 	 */
 	public function __construct(Data $data)
 	{

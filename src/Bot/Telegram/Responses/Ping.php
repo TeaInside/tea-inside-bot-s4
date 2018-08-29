@@ -16,14 +16,16 @@ class Ping extends ResponseFoundation
 	/**
 	 * @return void
 	 */
-	public function ping(): void
+	public function ping(): bool
 	{
 		Exe::sendMessage(
 			[
 				"text" => "Ok",
 				"chat_id" => $this->data["chat_id"],
-				"reply_to_message_id" => $this->data["reply_to_message_id"]
+				"reply_to_message_id" => $this->data["msg_id"]
 			]
 		);
+
+		return true;
 	}
 }

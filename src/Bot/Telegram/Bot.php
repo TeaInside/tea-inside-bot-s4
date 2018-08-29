@@ -2,6 +2,8 @@
 
 namespace Bot\Telegram;
 
+use Singleton;
+
 /**
  * @author Ammar Faizi <ammarfaizi2@gmail.com> https://www.facebook.com/ammarfaizi2
  * @license MIT
@@ -18,6 +20,12 @@ final class Bot
 	public function __construct(string $json)
 	{
 		$this->data = new Data($json);
+		Singleton::init(
+			[
+				"data" => $this->data,
+				"lang" => [Lang::class, [$this->data]]
+			]
+		);
 	}
 
 	/**

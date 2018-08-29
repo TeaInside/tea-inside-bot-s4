@@ -18,7 +18,7 @@ trait ResponseRoutes
 		/**
 		 * Ping command
 		 *
-		 * Example: ["/ping", "!ping", "~ping", ".ping"]
+		 * Examples: ["/ping", "!ping", "~ping", ".ping"]
 		 */
 		$this->set(function($d) {
 			return [
@@ -30,11 +30,11 @@ trait ResponseRoutes
 		/**
 		 * Me command
 		 *
-		 * Example: ["/me", "!me", "~me", ".me"]
+		 * Examples: ["/me", "!me", "~me", ".me"]
 		 */
-		$this->set(function() {
+		$this->set(function($d) {
 			return [
-				(bool) preg_match("/(?:^|\s)(\!|\/|\~|\.)me(?:$|\s)/Usi", $this->data["text"]),
+				(bool) preg_match("/(?:^|\s)(\!|\/|\~|\.)me(?:$|\s)/Usi", $d["text"]),
 				[]
 			];
 		}, function () {
@@ -46,5 +46,17 @@ trait ResponseRoutes
 				]
 			);
 		});
+
+		/**
+		 * Kulgram command
+		 *
+		 * Examples: ["/kulgram", "!kulgram"]
+		 */
+		$this->set(function($d) {
+			return [
+				(bool) preg_match("/(^(\!|\/|\~|\.)kulgram/Usi", $d["text"]),
+				[]
+			];
+		}, "Kulgram@handle");
 	}
 }

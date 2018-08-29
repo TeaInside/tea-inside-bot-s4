@@ -183,7 +183,6 @@ class Message implements LoggerInterface
 				        		CURLOPT_SSL_VERIFYHOST => false
 				        	]
 				        );
-
 				        $binary = curl_exec($ch);
 				        curl_close($ch);
 
@@ -195,6 +194,8 @@ class Message implements LoggerInterface
 				        flock($handle, LOCK_EX);
 				        fwrite($handle, $binary);
 				        fclose($handle);
+
+				        unset($binary, $handle, $md5, $sha1, $filename, $ch, $p, $a, $st);
 
 				        $this->pdo->prepare(
 				        	"INSERT INTO `files` (`type`, `telegram_file_id`, `md5_checksum`, `sha1_checksum`, `absolute_hash`, `hit_count`, `description`, `created_at`, `updated_at`)
@@ -220,7 +221,6 @@ class Message implements LoggerInterface
 				break;
 			
 			default:
-				
 				break;
 		}
 
