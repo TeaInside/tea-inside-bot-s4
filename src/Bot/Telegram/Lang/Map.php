@@ -11,6 +11,7 @@ namespace Bot\Telegram\Lang;
 final class Map
 {
 	public static $map = [
+		"kulgram.run" => En\Kulgram\Run::class,
 		"kulgram.error" => En\Kulgram\Error::class,
 		"kulgram.usage" => En\Kulgram\Usage::class,
 	];

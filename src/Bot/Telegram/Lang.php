@@ -49,4 +49,22 @@ final class Lang
 		}
 		return null;
 	}
+
+	/**
+	 * @param array $binder
+	 * @param string $subject
+	 * @return string
+	 */
+	public function bind(array $binder, string $subject): string
+	{
+		$r1 = $r2 = [];
+
+		foreach ($binder as $key => $value) {
+			$r1[] = "{{".$key."}}";
+			$r2[] = "{{".$value."}}";
+		}
+		unset($binder, $key, $value);
+
+		return str_replace($r1, $r2, $subject);
+	}
 }
