@@ -12,6 +12,6 @@ final class Map
 {
 	public static $map = [
 		"kulgram.error" => En\Kulgram\Error::class,
-		""
+		"kulgram.usage" => En\Kulgram\Usage::class,
 	];
 }

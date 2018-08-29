@@ -50,7 +50,13 @@ class Kulgram extends ResponseFoundation
 						Exe::sendMessage(
 							[
 								"chat_id" => $this->data["chat_id"],
-								"text" => $this->lang->get("kulgram.error.init_no_title_no_author"),
+								"text" => (
+									$this->lang->get("kulgram.error.init_no_title_no_author")
+									."\n\n"
+									.$this->lang->get("kulgram.usage.init")
+									."\n\n"
+									.$this->lang->get("kulgram.usage.footer")
+								),
 								"reply_to_message_id" => $this->data["msg_id"]
 							]
 						);
@@ -61,7 +67,14 @@ class Kulgram extends ResponseFoundation
 						Exe::sendMessage(
 							[
 								"chat_id" => $this->data["chat_id"],
-								"text" => ""
+								"text" => (
+									$this->lang->get("kulgram.error.init_no_title")
+									."\n\n"
+									.$this->lang->get("kulgram.usage.init")
+									."\n\n"
+									.$this->lang->get("kulgram.usage.footer")
+								),
+								"reply_to_message_id" => $this->data["msg_id"]
 							]
 						);
 						return true;
@@ -71,13 +84,20 @@ class Kulgram extends ResponseFoundation
 						Exe::sendMessage(
 							[
 								"chat_id" => $this->data["chat_id"],
-								"text" => ""
+								"text" => (
+									$this->lang->get("kulgram.error.init_no_author")
+									."\n\n"
+									.$this->lang->get("kulgram.usage.init")
+									."\n\n"
+									.$this->lang->get("kulgram.usage.footer")
+								),
+								"reply_to_message_id" => $this->data["msg_id"]
 							]
 						);
 						return true;
 					}
 
-					return $this->init($_argv["title"]." oleh ".$_argv["author"]);
+					return $this->init($_argv["title"], $_argv["author"]);
 				case "start":
 					return $this->start();
 				case "stop":
@@ -95,5 +115,21 @@ class Kulgram extends ResponseFoundation
 			}
 
 		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function init(string $title, string $author): bool
+	{
+		Exe::sendMessage(
+			[
+				"text" => $title." oleh ".$author,
+				"chat_id" => $this->data["chat_id"],
+				"reply_to_message_id" => $this->data["msg_id"]
+			]
+		);
+
+		return true;
 	}
 }
