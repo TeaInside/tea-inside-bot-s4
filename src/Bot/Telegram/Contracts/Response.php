@@ -10,7 +10,7 @@ use Bot\Telegram\Data;
  * @package \Bot\Telegram\Contract
  * @version 4.0
  */
-interface LoggerInterface
+interface Response
 {
 	/**
 	 * @param \Bot\Telegram\Data $data
@@ -18,9 +18,4 @@ interface LoggerInterface
 	 * Constructor.
 	 */
 	public function __construct(Data $data);
-
-	/**
-	 * @return void
-	 */
-	public function run(): void;
 }

@@ -15,18 +15,36 @@ trait ResponseRoutes
 	 */
 	private function buildRoutes(): void
 	{
-		if (preg_match("/\/me/Usi", $this->data["text"])) {
-			$this->set(function() {
-				return [true, []];
-			}, function () {
-				Exe::sendMessage(
-					[
-						"text" => "There is no data stored for this user.",
-						"chat_id" => $this->data["chat_id"],
-						"reply_to_message_id" => $this->data["msg_id"]
-					]
-				);
-			});
-		}
+		/**
+		 * Ping command
+		 *
+		 * Example: ["/ping", "!ping", "~ping", ".ping"]
+		 */
+		$this->set(function($d) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)ping$/", $d["text"]),
+				[]
+			];
+		}, "Ping@ping");
+
+		/**
+		 * Me command
+		 *
+		 * Example: ["/me", "!me", "~me", ".me"]
+		 */
+		$this->set(function() {
+			return [
+				(bool) preg_match("/(?:^|\s)(\!|\/|\~|\.)me(?:$|\s)/Usi", $this->data["text"]),
+				[]
+			];
+		}, function () {
+			Exe::sendMessage(
+				[
+					"text" => "There is no data stored for this user.",
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+		});
 	}
 }
