@@ -42,8 +42,8 @@ final class Lang
 		if (count($key) === 3) {
 			$m = $key[0].".".$key[1];
 			if (isset(Map::$map[$m])) {
-				if (isset(Map::$map[$m]::$list[$key[3]])) {
-					return Map::$map[$m]::$list[$key[3]];
+				if (isset(Map::$map[$m]::$list[$key[2]])) {
+					return Map::$map[$m]::$list[$key[2]];
 				}
 			}
 		}
