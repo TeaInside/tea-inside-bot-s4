@@ -325,7 +325,7 @@ class Kulgram extends ResponseFoundation
 	 */
 	public function __destruct()
 	{
-		fclose($this->handle);
+		is_resource($this->handle) and fclose($this->handle);
 		file_put_contents(
 			$this->path."/info.json",
 			json_encode($this->info, JSON_UNESCAPED_SLASHES),
