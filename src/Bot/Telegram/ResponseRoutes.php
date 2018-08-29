@@ -54,7 +54,7 @@ trait ResponseRoutes
 		 */
 		$this->set(function($d) {
 			return [
-				(bool) preg_match("/(^(\!|\/|\~|\.)kulgram/Usi", $d["text"]),
+				(bool) preg_match("/^(\!|\/|\~|\.)kulgram/Usi", $d["text"]),
 				[]
 			];
 		}, "Kulgram@handle");
