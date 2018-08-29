@@ -67,7 +67,7 @@ final class Singleton
 	{
 		if (isset($this->instances[$key])) {
 			if (is_array($this->instances[$key])) {
-				$this->instances[$key] = new $this->instances[$key][0](...$this->instances[$key][0][1]);
+				$this->instances[$key] = new $this->instances[$key][0](...$this->instances[$key][1]);
 			} elseif (! is_object($this->instances[$key])) {
 				throw new Exception("Invalid instance value");
 			}
