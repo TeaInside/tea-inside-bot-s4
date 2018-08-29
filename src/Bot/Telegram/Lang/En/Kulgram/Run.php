@@ -18,6 +18,9 @@ Session ID	: {{session_id}}
 Title		: {{title}}
 Author		: {{author}}
 
-Use <code>/kulgram start</code> to start the kulgram recorder."
+Use <code>/kulgram start</code> to start the kulgram recorder.",
+		"start" => "System record has been started!
+
+Kindly to start the kulgram."
 	];
 }

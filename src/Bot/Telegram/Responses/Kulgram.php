@@ -94,7 +94,8 @@ class Kulgram extends ResponseFoundation
 									."\n\n"
 									.$this->lang->get("kulgram.usage.footer")
 								),
-								"reply_to_message_id" => $this->data["msg_id"]
+								"reply_to_message_id" => $this->data["msg_id"],
+								"parse_mode" => "HTML"
 							]
 						);
 						return true;
@@ -114,7 +115,8 @@ class Kulgram extends ResponseFoundation
 									."\n\n"
 									.$this->lang->get("kulgram.usage.footer")
 								),
-								"reply_to_message_id" => $this->data["msg_id"]
+								"reply_to_message_id" => $this->data["msg_id"],
+								"parse_mode" => "HTML"
 							]
 						);
 						return true;
@@ -134,7 +136,8 @@ class Kulgram extends ResponseFoundation
 									."\n\n"
 									.$this->lang->get("kulgram.usage.footer")
 								),
-								"reply_to_message_id" => $this->data["msg_id"]
+								"reply_to_message_id" => $this->data["msg_id"],
+								"parse_mode" => "HTML"
 							]
 						);
 						return true;
@@ -154,7 +157,8 @@ class Kulgram extends ResponseFoundation
 									."\n\n"
 									.$this->lang->get("kulgram.usage.footer")
 								),
-								"reply_to_message_id" => $this->data["msg_id"]
+								"reply_to_message_id" => $this->data["msg_id"],
+								"parse_mode" => "HTML"
 							]
 						);
 					return true;
@@ -201,16 +205,44 @@ class Kulgram extends ResponseFoundation
 	}
 
 	/**
-	 * Destructor.
+	 * @return bool
 	 */
-	public function __destruct()
+	private function start(): bool
 	{
-		fclose($this->handle);
-		file_put_contents(
-			$this->path."/info.json",
-			json_encode($this->info, JSON_UNESCAPED_SLASHES),
-			LOCK_EX
-		);
+		$this->loadData();
+
+		if ($this->info["status"] === "idle") {
+			$this->info["status"] = "recording";
+			$this->info["session"]["start_point"] = $this->data["msg_id"];
+			$this->info["session"]["start_date"] = $this->data["_now"];
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.run.start"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+		} elseif ($this->info["status"] === "sleep") {
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.error.start_no_session"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"],
+					"parse_mode" => "HTML"
+				]
+			);
+		} elseif ($this->info["status"] === "recording") {
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.error.start_when_recording"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"],
+					"parse_mode" => "HTML"
+				]
+			);
+		}
+
+		return true;
 	}
 
 	/**
@@ -233,13 +265,14 @@ class Kulgram extends ResponseFoundation
 					"text" => $this->lang->bind(
 						[
 							"session_id" => $this->info["count"],
-							"title" => $title,
-							"author" => $author
+							"title" => ee($title),
+							"author" => ee($author)
 						],
 						$this->lang->get("kulgram.run.init_ok")
 					),
 					"chat_id" => $this->data["chat_id"],
-					"reply_to_message_id" => $this->data["msg_id"]
+					"reply_to_message_id" => $this->data["msg_id"],
+					"parse_mode" => "HTML"
 				]
 			);
 		} elseif ($this->info["status"] === "idle") {
@@ -249,8 +282,8 @@ class Kulgram extends ResponseFoundation
 						$this->lang->bind(
 							[
 								"session_id" => $this->info["count"],
-								"title" => $this->info["session"]["title"],
-								"author" => $this->info["session"]["author"]
+								"title" => ee($this->info["session"]["title"]),
+								"author" => ee($this->info["session"]["author"])
 							],
 							$this->lang->get("kulgram.error.init_idle")
 						)
@@ -258,7 +291,8 @@ class Kulgram extends ResponseFoundation
 						.$this->lang->get("kulgram.usage.footer")
 					),
 					"chat_id" => $this->data["chat_id"],
-					"reply_to_message_id" => $this->data["msg_id"]
+					"reply_to_message_id" => $this->data["msg_id"],
+					"parse_mode" => "HTML"
 				]
 			);
 		} elseif ($this->info["status"] === "recording") {
@@ -268,20 +302,34 @@ class Kulgram extends ResponseFoundation
 						$this->lang->bind(
 							[
 								"session_id" => $this->info["count"],
-								"title" => $this->info["session"]["title"],
-								"author" => $this->info["session"]["author"]
+								"title" => ee($this->info["session"]["title"]),
+								"author" => ee($this->info["session"]["author"])
 							],
-							$this->lang->get("kulgram.error.init_start")
+							$this->lang->get("kulgram.error.init_recording")
 						)
 						."\n\n"
 						.$this->lang->get("kulgram.usage.footer")
 					),
 					"chat_id" => $this->data["chat_id"],
-					"reply_to_message_id" => $this->data["msg_id"]
+					"reply_to_message_id" => $this->data["msg_id"],
+					"parse_mode" => "HTML"
 				]
 			);
 		}
 
 		return true;
+	}
+
+	/**
+	 * Destructor.
+	 */
+	public function __destruct()
+	{
+		fclose($this->handle);
+		file_put_contents(
+			$this->path."/info.json",
+			json_encode($this->info, JSON_UNESCAPED_SLASHES),
+			LOCK_EX
+		);
 	}
 }

@@ -61,7 +61,7 @@ final class Lang
 
 		foreach ($binder as $key => $value) {
 			$r1[] = "{{".$key."}}";
-			$r2[] = "{{".$value."}}";
+			$r2[] = $value;
 		}
 		unset($binder, $key, $value);
 

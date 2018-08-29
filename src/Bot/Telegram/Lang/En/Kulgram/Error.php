@@ -20,12 +20,18 @@ class Error
 Session ID	: {{session_id}}
 Title		: {{title}}
 Author		: {{author}}",
-		"init_start" => "Could not initialize system record because there is an active session. Please stop this session first!
+		"init_recording" => "Could not initialize the system record because there is an active session. Please stop this session first!
 
 **Current Session**
 Session ID	: {{session_id}}
 Title		: {{title}}
 Author		: {{author}}",
+		"start_no_session" => "Could not start the system record because there is no idle session. Please initialize a session first!
+
+Example: <code>/kulgram init --title \"How to Make Fried Chicken\" --author \"Adolf Hitler\"</code>",
+		"start_when_recording" => "Could not start the system record because it is being recorded. Please stop the current session first!
+
+Example: <code>/kulgram stop</code>",
 		"group_only" => "You can only use this command in the group.",
 	];
 }
