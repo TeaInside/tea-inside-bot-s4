@@ -2,6 +2,9 @@
 
 namespace Bot\Telegram\Responses;
 
+use DB;
+use PDO;
+use Mpdf\Mpdf;
 use Exception;
 use Singleton;
 use Bot\Telegram\Exe;
@@ -34,6 +37,11 @@ class Kulgram extends ResponseFoundation
 	 * @var resource
 	 */
 	private $handle;
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
 	/**
 	 * @return bool
@@ -170,9 +178,9 @@ class Kulgram extends ResponseFoundation
 
 	/**
 	 * @throws \Exception
-	 * @return void
+	 * @return bool
 	 */
-	private function loadData(): void
+	private function loadData(): bool
 	{
 		$this->path = STORAGE_PATH."/kulgram/".str_replace("-", "_", $this->data["chat_id"]);
 		is_dir(STORAGE_PATH."/kulgram") or mkdir(STORAGE_PATH."/kulgram");
@@ -202,6 +210,56 @@ class Kulgram extends ResponseFoundation
 				"count" => 0
 			];
 		}
+
+		if (
+			(!in_array($this->data["user_id"], SUDOERS)) &&
+			(!$this->isAdmin())
+		) {
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.error.access_denied"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function isAdmin(): bool
+	{
+		$this->pdo = DB::pdo();
+		$st = $this->pdo->prepare(
+			"SELECT `user_id` FROM `group_admin` WHERE `user_id`=:user_id AND `group_id`=:group_id LIMIT 1;"
+		);
+		$st->execute(
+			[
+				":user_id" => $this->data["user_id"],
+				":group_id" => $this->data["chat_id"]
+			]
+		);
+		if ($st->fetch(PDO::FETCH_ASSOC)) {
+			return true;
+		}
+
+		unset($st);
+
+		$a = Exe::getChatAdministrators(["chat_id" => $this->data["group_id"]]);
+		$a = json_decode($a["out"], true);
+		if (isset($a["result"])) {
+			foreach ($a["result"] as $key => $admin) {
+				if ($admin["id"] == $this->data["user_id"]) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 	
 	/**
@@ -209,7 +267,9 @@ class Kulgram extends ResponseFoundation
 	 */
 	private function cancel(): bool
 	{
-		$this->loadData();
+		if ($this->loadData()) {
+			return true;
+		}
 		
 		if ($this->info["status"] === "idle") {
 			$this->info["status"] = "sleep";
@@ -249,7 +309,9 @@ class Kulgram extends ResponseFoundation
 	 */
 	private function start(): bool
 	{
-		$this->loadData();
+		if ($this->loadData()) {
+			return true;
+		}
 
 		if ($this->info["status"] === "idle") {
 			$this->info["status"] = "recording";
@@ -290,7 +352,9 @@ class Kulgram extends ResponseFoundation
 	 */
 	private function init(string $title, string $author): bool
 	{
-		$this->loadData();
+		if ($this->loadData()) {
+			return true;
+		}
 
 		if ($this->info["status"] === "sleep") {
 			$this->info["status"] = "idle";
@@ -358,6 +422,16 @@ class Kulgram extends ResponseFoundation
 		}
 
 		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function stop(): bool
+	{
+		if ($this->loadData()) {
+			return true;
+		}
 	}
 
 	/**
