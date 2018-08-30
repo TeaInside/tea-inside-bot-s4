@@ -465,7 +465,7 @@ class Kulgram extends ResponseFoundation
 				]
 			);
 
-			$st = $pdo->prepare(
+			$st = $this->pdo->prepare(
 				"SELECT 
 					`a`.`id`,`a`.`first_name`,`a`.`last_name`,`a`.`username`,`b`.`telegram_msg_id`,
 					`c`.`text`,`c`.`type`,`d`.`absolute_hash`
