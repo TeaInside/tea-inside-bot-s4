@@ -503,7 +503,7 @@ class Kulgram extends ResponseFoundation
 					(isset($r["username"]) ? " (@".$r["username"].")" : ""), ENT_QUOTES, "UTF-8"
 				);
 				$text = str_replace("\n", "<br>", htmlspecialchars($r["text"]));
-				if ($r["msg_type"] == "photo") {
+				if ($r["type"] == "photo") {
 					$mpdf->WriteHTML(
 						$time." <b>".$name."</b><br>".$text."<br>"
 					);
@@ -513,7 +513,7 @@ class Kulgram extends ResponseFoundation
 					$mpdf->WriteHTML(
 						"<br><br>"
 					);
-				} elseif ($r["msg_type"] === "text") {
+				} elseif ($r["type"] === "text") {
 					$mpdf->WriteHTML(
 						"<b>".$name."</b> ".$time."<br>".$text."<br><br>"
 					);
