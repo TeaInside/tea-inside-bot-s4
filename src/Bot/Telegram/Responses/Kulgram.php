@@ -492,8 +492,7 @@ class Kulgram extends ResponseFoundation
 			$mpdf = new Mpdf(
 				[
 					"tempDir" => "/tmp",
-					"mode" => "utf-8",
-					[250, 250]
+					"mode" => "utf-8"
 				]
 			);
 
@@ -525,12 +524,13 @@ class Kulgram extends ResponseFoundation
 					);
 				}
 			}
+
 			ob_start();
 			$mpdf->Output();
 			$content = ob_get_clean();
 			file_put_contents($this->path."/".$this->info["count"].".pdf", $content);
 			$this->info["status"] = "sleep";
-			unset($this->info["session"]);
+			unset($this->info["session"], $content);
 			Exe::sendMessage(
 				[
 					"text" => "https://webhook-a2.teainside.tech/storage/kulgram/".$this->identifier."/".$this->info["count"].".pdf",
