@@ -58,5 +58,17 @@ trait ResponseRoutes
 				[]
 			];
 		}, "Kulgram@handle");
+
+		/**
+		 * Translate command
+		 * 
+		 * Example: ["/tr en id How are you?", "!tr en id What time is it?"]
+		 */
+		$this->set(function($d) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)tr/Usi", $d["text"]),
+				[]
+			];
+		}, "Translate@googleTranslate");
 	}
 }

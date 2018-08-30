@@ -14,5 +14,6 @@ final class Map
 		"kulgram.run" => En\Kulgram\Run::class,
 		"kulgram.error" => En\Kulgram\Error::class,
 		"kulgram.usage" => En\Kulgram\Usage::class,
+		"translate.usage" => En\Translate\Usage::class
 	];
 }
