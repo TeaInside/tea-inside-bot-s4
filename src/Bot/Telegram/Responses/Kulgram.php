@@ -87,7 +87,7 @@ class Kulgram extends ResponseFoundation
 					$_argv[$n[1][$k]] = ($v = trim($v));
 				}
 			}
-
+			$this->pdo = DB::pdo();
 			switch ($m[1]) {
 				case 'cancel':
 						return $this->cancel();
@@ -240,7 +240,6 @@ class Kulgram extends ResponseFoundation
 	 */
 	private function isAdmin(): bool
 	{
-		$this->pdo = DB::pdo();
 		$st = $this->pdo->prepare(
 			"SELECT `user_id` FROM `group_admin` WHERE `user_id`=:user_id AND `group_id`=:group_id LIMIT 1;"
 		);
