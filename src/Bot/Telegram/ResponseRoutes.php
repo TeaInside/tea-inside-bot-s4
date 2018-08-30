@@ -66,14 +66,14 @@ trait ResponseRoutes
 		 */
 		$this->set(function($d) {
 			return [
-				(bool) preg_match("/^(\!|\/|\~|\.)?t(l|r)/Usi", $d["text"]),
+				(bool) preg_match("/^(\!|\/|\~|\.)?t(l|r)($|[\s\n])/Usi", $d["text"]),
 				[]
 			];
 		}, "Translate@googleTranslate");
 
 		$this->set(function($d) {
 			return [
-				(bool) preg_match("/^(\!|\/|\~|\.)?(tlr|trl)/Usi", $d["text"]),
+				(bool) preg_match("/^(\!|\/|\~|\.)?(tlr|trl)($|[\s\n])/Usi", $d["text"]),
 				[]
 			];
 		}, "Translate@googleTranslatetoRepliedMessage");

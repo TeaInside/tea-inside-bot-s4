@@ -83,23 +83,38 @@ class Translate extends ResponseFoundation
 	 */
 	public function googleTranslatetoRepliedMessage(): bool
 	{
-		if (preg_match("/^(?:\!|\/|\~|\.)?(?:tlr|trl)(?:[\s\n]+)([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})/Usi", $this->data["text"], $m)) {
-			try {
-				$st = new GoogleTranslate($this->data["reply_to"]["text"], $m[1], $m[2]);
+		if (isset($this->data["reply_to"]["message_id"], $this->data["reply_to"]["text"])) {
+			if (preg_match("/^(?:\!|\/|\~|\.)?(?:tlr|trl)(?:[\s\n]+)?([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})/Usi", $this->data["text"], $m)) {
+				try {
+					$st = new GoogleTranslate($this->data["reply_to"]["text"], $m[1], $m[2]);
+					$st = trim($st->exec());
+					$st = $st === "" ? "~" : $st;
+				} catch (Exception $e) {
+					$st = $e->getMessage()."\nSee avaiable languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
+				}
+
+				Exe::sendMessage(
+					[
+						"chat_id" => $this->data["chat_id"],
+						"text" => $st,
+						"reply_to_message_id" => $this->data["reply_to"]["message_id"]
+					]
+				);
+				return true;
+			} else {
+				$st = new GoogleTranslate($this->data["reply_to"]["text"], "auto", "id");
 				$st = trim($st->exec());
 				$st = $st === "" ? "~" : $st;
-			} catch (Exception $e) {
-				$st = $e->getMessage()."\nSee avaiable languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
+				Exe::sendMessage(
+					[
+						"chat_id" => $this->data["chat_id"],
+						"text" => $st,
+						"reply_to_message_id" => $this->data["reply_to"]["message_id"]
+					]
+				);
+				return true;
 			}
-
-			Exe::sendMessage(
-				[
-					"chat_id" => $this->data["chat_id"],
-					"text" => $st,
-					"reply_to_message_id" => $this->data["reply_to"]["message_id"]
-				]
-			);
-			return true;
 		}
+		return false;
 	}
 }
