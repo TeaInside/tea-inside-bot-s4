@@ -507,7 +507,7 @@ class Kulgram extends ResponseFoundation
 				$text = str_replace("\n", "<br>", htmlspecialchars($r["text"]));
 				if ($r["type"] == "photo") {
 					$mpdf->WriteHTML(
-						$time." <b>".$name."</b><br>".$text."<br>"
+						"<b>".$name."</b><br>".$text."<br>"
 					);
 					$mpdf->WriteHTML(
 						"<img src=\"data:image/jpg;base64,".base64_encode(file_get_contents(STORAGE."/files/".$r["absolute_hash"].".jpg"))."\">"
@@ -517,7 +517,7 @@ class Kulgram extends ResponseFoundation
 					);
 				} elseif ($r["type"] === "text") {
 					$mpdf->WriteHTML(
-						"<b>".$name."</b> ".$time."<br>".$text."<br><br>"
+						"<b>".$name."</b><br>".$text."<br><br>"
 					);
 				}
 			}
