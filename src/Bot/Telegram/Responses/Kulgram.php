@@ -494,7 +494,9 @@ class Kulgram extends ResponseFoundation
 			);
 
 			$mpdf->WriteHTML(
-				"<center><h1>".htmlspecialchars($this->info["session"]["title"])."</h1></center><br>"
+				"<h1>".htmlspecialchars(
+					$this->info["session"]["title"]." by ".$this->info["session"]["author"]
+				)."</h1><br>"
 			);
 
 			while ($r = $st->fetch(PDO::FETCH_ASSOC)) {
