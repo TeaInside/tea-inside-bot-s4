@@ -21,6 +21,7 @@ Author		: {{author}}
 Use <code>/kulgram start</code> to start the kulgram recorder.",
 		"start" => "System record has been started!
 
-Kindly to start the kulgram."
+Kindly to start the kulgram.",
+		"cancel" => "Session has been cancelled."
 	];
 }

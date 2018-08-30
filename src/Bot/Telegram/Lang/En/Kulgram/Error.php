@@ -33,5 +33,7 @@ Example: <code>/kulgram init --title \"How to Make Fried Chicken\" --author \"Ad
 
 Example: <code>/kulgram stop</code>",
 		"group_only" => "You can only use this command in the group.",
+		"cancel_no_session" => "There is no session to be cancelled.",
+		"cancel_when_recording" => "Could not cancel the session because the system record is being recorded. You can only stop the session by <code>/kulgram stop</code>."
 	];
 }

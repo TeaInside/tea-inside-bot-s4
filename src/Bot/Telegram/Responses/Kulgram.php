@@ -77,7 +77,7 @@ class Kulgram extends ResponseFoundation
 
 			switch ($m[1]) {
 				case 'cancel':
-					break;
+						return $this->cancel();
 				case 'init':
 
 					/**
@@ -202,6 +202,46 @@ class Kulgram extends ResponseFoundation
 				"count" => 0
 			];
 		}
+	}
+	
+	/**
+	 * @return bool
+	 */
+	private function cancel(): bool
+	{
+		$this->loadData();
+		
+		if ($this->info["status"] === "idle") {
+			$this->info["status"] = "sleep";
+			$this->info["count"]--;
+			unset($this->info["session"]);
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.run.cancel"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+		} elseif ($this->info["status"] === "sleep") {
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.error.cancel_no_session"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+		} elseif ($this->info["status"] === "recording") {
+			Exe::sendMessage(
+				[					
+					"text" => $this->lang->get("kulgram.error.cancel_when_recording"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"],
+					"parse_mode" => "HTML"
+				]
+			);
+		}
+		
+		return true;
 	}
 
 	/**
