@@ -44,6 +44,11 @@ class Kulgram extends ResponseFoundation
 	private $pdo;
 
 	/**
+	 * @var string
+	 */
+	private $identifier;
+
+	/**
 	 * @return bool
 	 */
 	public function handle(): bool
@@ -182,7 +187,9 @@ class Kulgram extends ResponseFoundation
 	 */
 	private function loadData(): bool
 	{
-		$this->path = STORAGE_PATH."/kulgram/".str_replace("-", "_", $this->data["chat_id"]);
+		$this->path = STORAGE_PATH."/kulgram/".(
+			$this->identifier = str_replace("-", "_", $this->data["chat_id"])
+		);
 		is_dir(STORAGE_PATH."/kulgram") or mkdir(STORAGE_PATH."/kulgram");
 		is_dir($this->path) or mkdir($this->path);
 
@@ -461,7 +468,7 @@ class Kulgram extends ResponseFoundation
 			$st = $pdo->prepare(
 				"SELECT 
 					`a`.`id`,`a`.`first_name`,`a`.`last_name`,`a`.`username`,`b`.`telegram_msg_id`,
-					`c`.`text`,`d`.`absolute_hash`
+					`c`.`text`,`c`.`type`,`d`.`absolute_hash`
 					FROM 
 					`users` AS `a` INNER JOIN `group_messages` AS `b` 
 					ON `a`.`id` = `b`.`user_id` INNER JOIN `group_messages_data` AS `c`
@@ -507,13 +514,28 @@ class Kulgram extends ResponseFoundation
 					$mpdf->WriteHTML(
 						"<br><br>"
 					);
-				} else {
+				} elseif ($r["msg_type"] === "text") {
 					$mpdf->WriteHTML(
 						"<b>".$name."</b> ".$time."<br>".$text."<br><br>"
 					);
 				}
 			}
+			ob_start();
+			$mpdf->Output();
+			$content = ob_get_clean();
+			file_put_contents($this->path."/".$this->info["count"].".pdf", $content);
+			$this->info["status"] = "sleep";
+			unset($this->info["session"]);
+			Exe::sendMessage(
+				[
+					"text" => "https://webhook-a2.teainside.tech/storage/kulgram/".$this->identifier."/".$this->info["count"].".pdf",
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
 		}
+
+		return true;
 	}
 
 	/**
