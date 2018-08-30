@@ -31,7 +31,7 @@ class Translate extends ResponseFoundation
 					$st = trim($st->exec());
 					$st = $st === "" ? "~" : $st;
 				} catch (Exception $e) {
-					$st = $e->getMessage()."\nSee avaiable languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
+					$st = $e->getMessage()."\nSee available languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
 				}
 				
 				Exe::sendMessage(
@@ -49,7 +49,7 @@ class Translate extends ResponseFoundation
 					$st = trim($st->exec());
 					$st = $st === "" ? "~" : $st;
 				} catch (Exception $e) {
-					$st = $e->getMessage()."\nSee avaiable languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
+					$st = $e->getMessage()."\nSee available languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
 				}
 
 				Exe::sendMessage(
@@ -90,7 +90,7 @@ class Translate extends ResponseFoundation
 					$st = trim($st->exec());
 					$st = $st === "" ? "~" : $st;
 				} catch (Exception $e) {
-					$st = $e->getMessage()."\nSee avaiable languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
+					$st = $e->getMessage()."\nSee available languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
 				}
 
 				Exe::sendMessage(
