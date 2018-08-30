@@ -154,7 +154,7 @@ final class Data implements ArrayAccess, JsonSerializable
 
 			$this["msg_type"] = "sticker";
 			$this["sticker"] = $this->in["message"]["sticker"];
-			$this["text"] = $this["sticker"]["emoji"]." (".$this["sticker"]["set_name"].")";
+			$this["text"] = $this["sticker"]["emoji"].(isset($this["sticker"]["set_name"]) ? " (".$this["sticker"]["set_name"].")" : "");
 			if ($this->in["message"]["chat"]["type"] === "private") {
 				$this["chat_type"] = "private";
 			} else {
