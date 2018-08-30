@@ -70,5 +70,12 @@ trait ResponseRoutes
 				[]
 			];
 		}, "Translate@googleTranslate");
+
+		$this->set(function($d) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)?(tlr|trl)/Usi", $d["text"]),
+				[]
+			];
+		}, "Translate@googleTranslatetoRepliedMessage");
 	}
 }
