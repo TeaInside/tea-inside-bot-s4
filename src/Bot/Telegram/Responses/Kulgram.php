@@ -510,7 +510,7 @@ class Kulgram extends ResponseFoundation
 						"<b>".$name."</b><br>".$text."<br>"
 					);
 					$mpdf->WriteHTML(
-						"<img src=\"data:image/jpg;base64,".base64_encode(file_get_contents(STORAGE."/files/".$r["absolute_hash"].".jpg"))."\">"
+						"<img src=\"data:image/jpg;base64,".base64_encode(file_get_contents(STORAGE_PATH."/files/".$r["absolute_hash"].".jpg"))."\">"
 					);
 					$mpdf->WriteHTML(
 						"<br><br>"
