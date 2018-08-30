@@ -12,7 +12,9 @@ class Usage
 {
 	static $list = [
 		"basic" => 
-"Usage: /tr [from] [to] [text]
+"Ice Tea Translator 4.0.1
+
+Usage: /tr [from] [to] [text]
 
 Example: <code>/tr en id How are you?</code>",
 	];

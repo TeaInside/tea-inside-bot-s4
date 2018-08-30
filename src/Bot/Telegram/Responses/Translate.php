@@ -20,7 +20,7 @@ class Translate extends ResponseFoundation
 	 */
 	public function googleTranslate(): bool
 	{
-		if (preg_match("/^(?:\!|\/|\~|\.)(?:tr[\s\n]+)([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})(?:[\s\n]+)?(.*)?$/Usi", $this->data["text"], $m)) {
+		if (preg_match("/^(?:\!|\/|\~|\.)?(?:t)(?:r|l)(?:[\s\n]+)([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})(?:[\s\n]+)?(.*)?$/Usi", $this->data["text"], $m)) {
 			if (isset($m[3])) {
 				$st = new GoogleTranslate(trim($m[3]), $m[1], $m[2]);
 				$st = trim($st->exec());
@@ -55,7 +55,8 @@ class Translate extends ResponseFoundation
 			[
 				"chat_id" => $this->data["chat_id"],
 				"text" => $lang->get("translate.usage.basic"),
-				"reply_to_message_id" => $this->data["msg_id"]
+				"reply_to_message_id" => $this->data["msg_id"],
+				"parse_mode" => "HTML"
 			]
 		);
 

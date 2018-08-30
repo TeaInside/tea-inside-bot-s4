@@ -66,7 +66,7 @@ trait ResponseRoutes
 		 */
 		$this->set(function($d) {
 			return [
-				(bool) preg_match("/^(\!|\/|\~|\.)tr/Usi", $d["text"]),
+				(bool) preg_match("/^(\!|\/|\~|\.)?t(l|r)/Usi", $d["text"]),
 				[]
 			];
 		}, "Translate@googleTranslate");
