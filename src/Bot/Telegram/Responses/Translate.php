@@ -3,6 +3,7 @@
 namespace Bot\Telegram\Responses;
 
 use Singleton;
+use Exception;
 use Bot\Telegram\Exe;
 use Bot\Telegram\ResponseFoundation;
 use GoogleTranslate\GoogleTranslate;
@@ -20,11 +21,19 @@ class Translate extends ResponseFoundation
 	 */
 	public function googleTranslate(): bool
 	{
+		defined("data") or define("data", STORAGE_PATH);
+
 		if (preg_match("/^(?:\!|\/|\~|\.)?(?:t)(?:r|l)(?:[\s\n]+)([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})(?:[\s\n]+)?(.*)?$/Usi", $this->data["text"], $m)) {
 			if (isset($m[3])) {
-				$st = new GoogleTranslate(trim($m[3]), $m[1], $m[2]);
-				$st = trim($st->exec());
-				$st = $st === "" ? "~" : $st;
+
+				try {
+					$st = new GoogleTranslate(trim($m[3]), $m[1], $m[2]);
+					$st = trim($st->exec());
+					$st = $st === "" ? "~" : $st;
+				} catch (Exception $e) {
+					$st = $e->getMessage();
+				}
+				
 				Exe::sendMessage(
 					[
 						"chat_id" => $this->data["chat_id"],
@@ -34,9 +43,15 @@ class Translate extends ResponseFoundation
 				);
 				return true;
 			} elseif (isset($this->data["reply_to"]["message_id"], $this->data["reply_to"]["text"])) {
-				$st = new GoogleTranslate($this->data["reply_to"]["text"], $m[1], $m[2]);
-				$st = trim($st->exec());
-				$st = $st === "" ? "~" : $st;
+			
+				try {
+					$st = new GoogleTranslate($this->data["reply_to"]["text"], $m[1], $m[2]);
+					$st = trim($st->exec());
+					$st = $st === "" ? "~" : $st;
+				} catch (Exception $e) {
+					$st = $e->getMessage();
+				}
+
 				Exe::sendMessage(
 					[
 						"chat_id" => $this->data["chat_id"],
