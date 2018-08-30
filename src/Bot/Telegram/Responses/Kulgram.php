@@ -490,7 +490,11 @@ class Kulgram extends ResponseFoundation
 			);
 
 			$mpdf = new Mpdf(
-				["tempDir" => "/tmp"]
+				[
+					"tempDir" => "/tmp",
+					"mode" => "utf-8",
+					[250, 250]
+				]
 			);
 
 			$mpdf->WriteHTML(
