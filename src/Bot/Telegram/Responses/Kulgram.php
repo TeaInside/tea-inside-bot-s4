@@ -432,6 +432,88 @@ class Kulgram extends ResponseFoundation
 		if ($this->loadData()) {
 			return true;
 		}
+
+		if ($this->info["status"] === "recording") {
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.run.stop_1"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.run.stop_2"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+
+			Exe::sendMessage(
+				[
+					"text" => $this->lang->get("kulgram.run.stop_building_pdf"),
+					"chat_id" => $this->data["chat_id"],
+					"reply_to_message_id" => $this->data["msg_id"]
+				]
+			);
+
+			$st = $pdo->prepare(
+				"SELECT 
+					`a`.`id`,`a`.`first_name`,`a`.`last_name`,`a`.`username`,`b`.`telegram_msg_id`,
+					`c`.`text`,`d`.`absolute_hash`
+					FROM 
+					`users` AS `a` INNER JOIN `group_messages` AS `b` 
+					ON `a`.`id` = `b`.`user_id` INNER JOIN `group_messages_data` AS `c`
+					ON `b`.`id` = `c`.`group_message_id` LEFT JOIN `files` AS `d`
+					ON `c`.`file_id` = `d`.`id`
+					WHERE 
+						`b`.`group_id` = :group_id AND
+						`b`.`telegram_msg_id` >= :_start AND
+						`b`.`telegram_msg_id` <= :_end
+					ORDER BY `b`.`telegram_msg_id` ASC;
+				"
+			);
+
+			$st->execute(
+				[
+					":group_id" => $this->data["chat_id"],
+					":_start" => $this->info["session"]["start_point"],
+					":_end" => $this->data["msg_id"]
+				]
+			);
+
+			$mpdf = new Mpdf(
+				["tempDir" => "/tmp"]
+			);
+
+			$mpdf->WriteHTML(
+				"<center><h1>".htmlspecialchars($this->info["session"]["title"])."</h1></center><br>"
+			);
+
+			while ($r = $st->fetch(PDO::FETCH_ASSOC)) {
+				$name = htmlspecialchars(
+					$r["first_name"].(isset($r["last_name"]) ? " ".$r["last_name"] : "").
+					(isset($r["username"]) ? " (@".$r["username"].")" : ""), ENT_QUOTES, "UTF-8"
+				);
+				$text = str_replace("\n", "<br>", htmlspecialchars($r["text"]));
+				if ($r["msg_type"] == "photo") {
+					$mpdf->WriteHTML(
+						$time." <b>".$name."</b><br>".$text."<br>"
+					);
+					$mpdf->WriteHTML(
+						"<img src=\"data:image/jpg;base64,".base64_encode(file_get_contents(STORAGE."/files/".$r["absolute_hash"].".jpg"))."\">"
+					);
+					$mpdf->WriteHTML(
+						"<br><br>"
+					);
+				} else {
+					$mpdf->WriteHTML(
+						"<b>".$name."</b> ".$time."<br>".$text."<br><br>"
+					);
+				}
+			}
+		}
 	}
 
 	/**

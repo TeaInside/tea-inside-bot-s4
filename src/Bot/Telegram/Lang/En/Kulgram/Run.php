@@ -22,6 +22,9 @@ Use <code>/kulgram start</code> to start the kulgram recorder.",
 		"start" => "System record has been started!
 
 Kindly to start the kulgram.",
-		"cancel" => "Session has been cancelled."
+		"cancel" => "Session has been cancelled.",
+		"stop_1" => "Stopping system record...",
+		"stop_2" => "System record stopped successfully!",
+		"stop_building_pdf" => "Building PDF data..."
 	];
 }
