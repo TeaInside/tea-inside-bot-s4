@@ -12,4 +12,5 @@ if (isset($_GET["key"])) {
 	header("Content-Type: text/plain");
 	exit("Forbidden!");
 }
+
 require __DIR__."/../../connector/line/first.php";
