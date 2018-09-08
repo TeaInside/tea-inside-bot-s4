@@ -23,7 +23,7 @@ class Translate extends ResponseFoundation
 	{
 		defined("data") or define("data", STORAGE_PATH);
 
-		if (preg_match("/^(?:\!|\/|\~|\.)?(?:t)(?:r|l)(?:[\s\n]+)([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})(?:[\s\n]+)?(.*)?$/Usi", $this->data["text"], $m)) {
+		if (preg_match("/^(?:\!|\/|\~|\.)?(?:t)(?:r|l)(?:[\s\n]+)([a-z]{2}|auto|zh-cn|zh-tw)(?:[\s\n]+)([a-z]{2}|zh-cn|zh-tw)(?:[\s\n]+)?(.*)?$/Usi", $this->data["text"], $m)) {
 			if (isset($m[3])) {
 
 				try {
@@ -84,7 +84,7 @@ class Translate extends ResponseFoundation
 	public function googleTranslatetoRepliedMessage(): bool
 	{
 		if (isset($this->data["reply_to"]["message_id"], $this->data["reply_to"]["text"])) {
-			if (preg_match("/^(?:\!|\/|\~|\.)?(?:tlr|trl)(?:[\s\n]+)?([a-z]{2}|auto)(?:[\s\n]+)([a-z]{2})/Usi", $this->data["text"], $m)) {
+			if (preg_match("/^(?:\!|\/|\~|\.)?(?:tlr|trl)(?:[\s\n]+)?([a-z]{2}|auto|zh-cn|zh-tw)(?:[\s\n]+)([a-z]{2}|zh-cn|zh-tw)/Usi", $this->data["text"], $m)) {
 				try {
 					$st = new GoogleTranslate($this->data["reply_to"]["text"], $m[1], $m[2]);
 					$st = trim($st->exec());
