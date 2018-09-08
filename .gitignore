@@ -7,3 +7,5 @@
 /.phpintel/
 /config/line/main.php
 /config/telegram/main.php
+/config/line/webhook_key.php
+/config/telegram/webhook_key.php
