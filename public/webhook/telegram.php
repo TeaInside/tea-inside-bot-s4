@@ -7,6 +7,10 @@ if (isset($_GET["key"])) {
 		header("Content-Type: text/plain");
 		exit("Forbidden!");
 	}
+} else {
+	http_response_code(403);
+	header("Content-Type: text/plain");
+	exit("Forbidden!");
 }
 
 require __DIR__."/../../connector/telegram/first.php";
