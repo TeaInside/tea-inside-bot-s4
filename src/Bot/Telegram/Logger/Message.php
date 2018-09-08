@@ -59,8 +59,8 @@ class Message implements LoggerInterface
 		$file_id = null;
 
 		$st = $this->pdo->prepare(
-			"INSERT INTO `group_messages` (`group_id`, `user_id`, `telegram_msg_id`, `reply_to_msg_id`, `created_at`, `updated_at`)
-			VALUES (:group_id, :user_id, :telegram_msg_id, :reply_to_msg_id, :created_at, :updated_at);"
+			"INSERT INTO `group_messages` (`group_id`, `user_id`, `telegram_msg_id`, `reply_to_msg_id`, `created_at`,`telegram_datetime`, `updated_at`)
+			VALUES (:group_id, :user_id, :telegram_msg_id, :reply_to_msg_id, :telegram_datetime, :created_at, :updated_at);"
 		);
 
 		$st->execute(
@@ -73,6 +73,7 @@ class Message implements LoggerInterface
 						$this->data->in["message"]["reply_to_message"]["message_id"] :
 							null
 				),
+				":telegram_datetime" => $this->data["date"],
 				":created_at" => $this->data["_now"],
 				":updated_at" => null
 			]
@@ -107,8 +108,8 @@ class Message implements LoggerInterface
 		$file_id = null;
 
 		$st = $this->pdo->prepare(
-			"INSERT INTO `private_messages` (`user_id`, `telegram_msg_id`, `reply_to_msg_id`, `created_at`, `updated_at`)
-			VALUES (:user_id, :telegram_msg_id, :reply_to_msg_id, :created_at, :updated_at);"
+			"INSERT INTO `private_messages` (`user_id`, `telegram_msg_id`, `reply_to_msg_id`, `telegram_datetime`, `created_at`, `updated_at`)
+			VALUES (:user_id, :telegram_msg_id, :reply_to_msg_id, :telegram_datetime, :created_at, :updated_at);"
 		);
 
 		$st->execute(
@@ -120,6 +121,7 @@ class Message implements LoggerInterface
 						$this->data->in["message"]["reply_to_message"]["message_id"] :
 							null
 				),
+				":telegram_datetime" => $this->data["date"],
 				"created_at" => $this->data["_now"],
 				"updated_at" => null
 			]

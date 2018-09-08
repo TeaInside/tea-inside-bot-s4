@@ -112,8 +112,11 @@ class Group implements LoggerInterface
 				":updated_at" => null
 			]
 		);
-		// $st = $this->pdo->prepare("INSERT INTO `group_settings` (`group_id`) VALUES (:group_id);");
-		// $st->execute([":group_id" => $this->data["group_id"]]);
+		$this->pdo->prepare("INSERT INTO `group_settings` (`group_id`) VALUES (:group_id);")->execute(
+			[
+				":group_id" => $this->data["group_id"]
+			]
+		);
 		$this->addGroupHistory();
 		$st = new GroupAdmin($this->data);
 		$st->run = true;
