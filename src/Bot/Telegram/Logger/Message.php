@@ -59,7 +59,7 @@ class Message implements LoggerInterface
 		$file_id = null;
 
 		$st = $this->pdo->prepare(
-			"INSERT INTO `group_messages` (`group_id`, `user_id`, `telegram_msg_id`, `reply_to_msg_id`, `created_at`,`telegram_datetime`, `updated_at`)
+			"INSERT INTO `group_messages` (`group_id`, `user_id`, `telegram_msg_id`, `reply_to_msg_id`, `telegram_datetime`, `created_at`, `updated_at`)
 			VALUES (:group_id, :user_id, :telegram_msg_id, :reply_to_msg_id, :telegram_datetime, :created_at, :updated_at);"
 		);
 
