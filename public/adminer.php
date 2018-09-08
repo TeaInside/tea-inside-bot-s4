@@ -42,7 +42,7 @@ if (isset($_POST["login"], $_GET["login_action"])) {
 			<p>Username:</p>
 			<input type="text" name="username"/>
 			<p>Password:</p>
-			<input type="text" name="password"/>
+			<input type="password" name="password"/>
 			<div style="margin-top: 30px;">
 				<button type="submit" name="login">Login</button>
 			</div>
