@@ -219,7 +219,7 @@ class Kulgram extends ResponseFoundation
 		}
 
 		if (
-			(!in_array($this->data["user_id"], SUDOERS)) &&
+			(!in_array($this->data["user_id"], GLOBAL_ADMINS)) &&
 			(!$this->isAdmin())
 		) {
 			Exe::sendMessage(
