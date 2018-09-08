@@ -13,23 +13,37 @@ if (isset($_SESSION["adminer_login"])) {
 }
 
 if (isset($_POST["login"], $_GET["login_action"])) {
-	
+	require __DIR__."/../config/adminer_credential.php";
+	if (in_array($_POST["username"], ADMINER_USERS)) {
+		if (password_hash($_POST["password"], ADMINER_USERS[$_POST["username"]])) {
+			$_SESSION["adminer_login"] = true;
+			header("Location: ?");
+			exit(0);
+		}
+	}
+	$alert = "Invalid username or password!";
 }
 
 ?><!DOCTYPE html>
 <html>
 <head>
 	<title>Login Adminer</title>
+	<style type="text/css">
+		* {
+			font-family: Arial, Helvetica;
+		}
+	</style>
+	<?php if (isset($alert)): ?><script type="text/javascript">alert('<?php print $alert; ?>')</script><?php endif ?>
 </head>
 <body>
 	<center>
 		<h2>Login</h2>
 		<form method="POST" action="?login_action=1">
-			<h4>Username:</h4>
+			<p>Username:</p>
 			<input type="text" name="username"/>
-			<h4>Password:</h4>
+			<p>Password:</p>
 			<input type="text" name="password"/>
-			<div>
+			<div style="margin-top: 30px;">
 				<button type="submit" name="login">Login</button>
 			</div>
 		</form>
