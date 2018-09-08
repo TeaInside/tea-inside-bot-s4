@@ -14,8 +14,8 @@ if (isset($_SESSION["adminer_login"])) {
 
 if (isset($_POST["login"], $_GET["login_action"])) {
 	require __DIR__."/../config/adminer_credential.php";
-	if (in_array($_POST["username"], ADMINER_USERS)) {
-		if (password_hash($_POST["password"], ADMINER_USERS[$_POST["username"]])) {
+	if (in_array($_POST["username"], ADMINER_CREDENTIALS)) {
+		if (password_hash($_POST["password"], ADMINER_CREDENTIALS[$_POST["username"]])) {
 			$_SESSION["adminer_login"] = true;
 			header("Location: ?");
 			exit(0);
