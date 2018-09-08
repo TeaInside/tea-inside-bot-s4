@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "require": {
         "mpdf/mpdf": "^7.1",
-        "ammarfaizi2/googletranslate": "^0.0.1"
+        "ammarfaizi2/googletranslate": "dev-master"
     },
     "autoload": {
         "files": [
