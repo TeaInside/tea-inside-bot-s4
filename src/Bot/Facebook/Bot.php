@@ -27,9 +27,11 @@ final class Bot
 	 */
 	public function run(): void
 	{
-		var_dump($this->data);
-
-		// $st = new Response($this->data);
-		// $st->run();
+		if (isset($this->data["entry"]) && is_array($this->data["entry"])) {
+			foreach ($this->data["entry"] as $key => $v) {
+				$st = new Response($v);
+				$st->run();
+			}
+		}
 	}
 }

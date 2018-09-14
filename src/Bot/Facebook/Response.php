@@ -16,7 +16,7 @@ final class Response
 	use ResponseRoutes;
 
 	/**
-	 * @var \Bot\Telegtram\Data
+	 * @var array
 	 */
 	private $data;
 
@@ -26,13 +26,27 @@ final class Response
 	private $routes = [];
 
 	/**
-	 * @param \Bot\Telegtram\Data $data
+	 * @param array $data
 	 *
 	 * Constructor.
 	 */
-	public function __construct(Data $data)
+	public function __construct(array $data)
 	{
 		$this->data = $data;
+
+		$st = new Exe(TOKENS["EsTehkuSegar"]);
+		$a = $st->post("v2.6/me/messages", 
+			[
+				"recepient" => [
+					"id" => $this->data["messaging"][0]["sender"]["id"]
+				],
+				"message" => [
+					"text" => "OK"
+				]
+			]
+		);
+		var_dump($a["out"]);
+		die;
 	}
 
 	/**
