@@ -20,12 +20,6 @@ final class Bot
 	public function __construct(string $json)
 	{
 		$this->data = new Data($json);
-		Singleton::init(
-			[
-				"data" => $this->data,
-				"lang" => [Lang::class, [$this->data]]
-			]
-		);
 	}
 
 	/**

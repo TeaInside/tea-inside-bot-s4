@@ -1,14 +1,14 @@
 <?php
 
-namespace Bot\Telegram;
+namespace Bot\Facebook;
 
 use ArrayAccess;
 use JsonSerializable;
-use Bot\Telegram\Exceptions\InvalidJsonDataException;
+use Bot\Facebook\Exceptions\InvalidJsonDataException;
 
 /**
  * @author Ammar Faizi <ammarfaizi2@gmail.com> https://www.facebook.com/ammarfaizi2
- * @package \Bot\Telegram
+ * @package \Bot\Facebook
  * @license MIT
  * @since 0.0.1
  */
@@ -28,7 +28,7 @@ final class Data implements ArrayAccess, JsonSerializable
 
 	/**
 	 * @param string $jsonString
-	 * @throws \Bot\Telegram\Exceptions\InvalidJsonDataException
+	 * @throws \Bot\Facebook\Exceptions\InvalidJsonDataException
 	 * @return void
 	 *
 	 * Constructor.
@@ -50,7 +50,16 @@ final class Data implements ArrayAccess, JsonSerializable
 	 */
 	private function buildContainer()
 	{
-		
+		if (
+			isset($this->in["entry"], $this->in["object"]) && 
+			$this->in["object"] === "page" && is_array($this->in["entry"])
+		) {
+			$this["entry"] = [];
+			foreach ($this->in["entry"] as $key => $v) {
+				$this["object"] = "page";
+				$this["entry"][$key] = $v;;
+			}
+		}
 	}
 
 	/**

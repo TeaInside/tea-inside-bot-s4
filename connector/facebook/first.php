@@ -34,5 +34,5 @@ shell_exec(
 // );
 
 file_put_contents(__DIR__."/../../logs/facebook/first.log", 
-	json_encode(json_decode($input), 128)
+	json_encode(json_decode(urldecode($input)), 128)
 );
