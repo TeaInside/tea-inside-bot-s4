@@ -28,6 +28,7 @@ final class Bot
 	public function run(): void
 	{
 		if (isset($this->data["entry"]) && is_array($this->data["entry"])) {
+			var_dump($this->data);
 			foreach ($this->data["entry"] as $key => $v) {
 				$st = new Response($v);
 				$st->run();
