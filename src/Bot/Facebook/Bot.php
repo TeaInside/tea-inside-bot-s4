@@ -1,6 +1,6 @@
 <?php
 
-namespace Bot\Telegram;
+namespace Bot\Facebook;
 
 use Singleton;
 
