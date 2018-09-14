@@ -33,20 +33,6 @@ final class Response
 	public function __construct(array $data)
 	{
 		$this->data = $data;
-
-		$st = new Exe(TOKENS["EsTehkuSegar"]);
-		$a = $st->post("v2.6/me/messages", 
-			[
-				"recipient" => [
-					"id" => $this->data["messaging"][0]["sender"]["id"]
-				],
-				"message" => [
-					"text" => "OK"
-				]
-			]
-		);
-		var_dump($a["out"]);
-		die;
 	}
 
 	/**
