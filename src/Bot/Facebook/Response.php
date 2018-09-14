@@ -37,7 +37,7 @@ final class Response
 		$st = new Exe(TOKENS["EsTehkuSegar"]);
 		$a = $st->post("v2.6/me/messages", 
 			[
-				"recepient" => [
+				"recipient" => [
 					"id" => $this->data["messaging"][0]["sender"]["id"]
 				],
 				"message" => [
