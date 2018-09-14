@@ -1,0 +1,25 @@
+<?php
+
+define("DB_HOST", "127.0.0.1");
+define("DB_PORT", "55599");
+define("DB_USER", "root");
+define("DB_PASS", "");
+
+
+define("TOKENS", [
+	"EsTehkuSegar" => "EAAPFA1dRfC4BAPH........."
+]);
+
+define("SUDOERS", "");
+
+define("PUBLIC_URL", "https://webhook-a2.teainside.tech");
+define("PUBLIC_PATH", BASEPATH."/public");
+define("STORAGE_PATH", BASEPATH."/storage");
+define("LOG_PATH", BASEPATH."/logs");
+
+define("SHELL_DEFAULT_USER_LIMIT", 20);
+define("USE_NETWORK_IN_ISOLATOR", false);
+define("ISOLATOR_MAPS", BASEPATH."/storage/isolator/maps");
+define("ISOLATOR_USER_TMP", BASEPATH."/storage/isolator/tmp");
+define("ISOLATOR_USER_ETC", BASEPATH."/storage/isolator/etc");
+define("ISOLATOR_USER_HOME", BASEPATH."/storage/isolator/home");

@@ -27,7 +27,9 @@ final class Bot
 	 */
 	public function run(): void
 	{
-		$st = new Response($this->data);
-		$st->run();
+		var_dump($this->data);
+
+		// $st = new Response($this->data);
+		// $st->run();
 	}
 }

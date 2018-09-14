@@ -4,11 +4,17 @@
 *.tmp
 *.lock
 /vendor/
+/public/fm/
 /.phpintel/
+/config/adminer_credential.php
+
+# Main ignore
 /config/line/main.php
 /config/telegram/main.php
+/config/facebook/main.php
+
+# Key ignore
 /config/line/webhook_key.php
 /config/telegram/webhook_key.php
-/config/adminer_credential.php
-/public/fm
-/public/facebook
+
+/config/facebook/hub_verify_token.php

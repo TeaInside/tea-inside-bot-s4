@@ -1,0 +1,3 @@
+<?php
+
+define("HUB_VERIFY_TOKEN", "... your token ...");
