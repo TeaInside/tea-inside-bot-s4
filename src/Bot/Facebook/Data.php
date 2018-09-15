@@ -50,7 +50,6 @@ final class Data implements ArrayAccess, JsonSerializable
 	 */
 	private function buildContainer()
 	{
-		var_dump($this->in);
 		if (
 			isset($this->in["entry"], $this->in["object"]) && 
 			$this->in["object"] === "page" && is_array($this->in["entry"])
