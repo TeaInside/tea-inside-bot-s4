@@ -3,6 +3,7 @@
 namespace Bot\Facebook\Responses;
 
 use Bot\Facebook\Exe;
+use Bot\Facebook\Lang;
 use Bot\Facebook\ResponseFoundation;
 
 /**
@@ -11,12 +12,12 @@ use Bot\Facebook\ResponseFoundation;
  * @package \Bot\Facebook\Responses
  * @version 4.0
  */
-class Ping extends ResponseFoundation
+class Help extends ResponseFoundation
 {
 	/**
 	 * @return void
 	 */
-	public function ping(): bool
+	public function menu(): bool
 	{
 		$st = new Exe(TOKENS["EsTehkuSegar"]);
 		
@@ -25,7 +26,7 @@ class Ping extends ResponseFoundation
 				"id" => $this->data["sender"]["id"]
 			],
 			"message" => [
-				"text" => "Ping OK!\n".round(time() - ($this->data["timestamp"]/1000), 5)." s"
+				"text" => Lang::get("help.general.menu")
 			]
 		]);
 

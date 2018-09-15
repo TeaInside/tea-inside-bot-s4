@@ -24,11 +24,16 @@ trait ResponseRoutes
 
 		$this->set(function () use ($txt) {
 			return [
-				(bool) preg_match("/^(\!|\/|\~|\.)?ping$/", $txt),
+				(bool) preg_match("/^(\!|\/|\~|\.)?ping$/Usi", $txt),
 				[]
 			];
 		}, "Ping@ping");
 
-		
+		$this->set(function () use ($txt) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)?help$/Usi", $txt),
+				[]
+			];
+		}, "Help@help");		
 	}
 }
