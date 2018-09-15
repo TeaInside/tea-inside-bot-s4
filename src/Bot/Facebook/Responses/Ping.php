@@ -19,12 +19,13 @@ class Ping extends ResponseFoundation
 	public function ping(): bool
 	{
 		$st = new Exe(TOKENS["EsTehkuSegar"]);
+		var_dump($this->data["timestamp"]);
 		$st->post("v2.6/me/messages", [
 			"recipient" => [
 				"id" => $this->data["sender"]["id"]
 			],
 			"message" => [
-				"text" => "Ping OK!"
+				"text" => "Ping OK!\n".(time() - ($this->data["timestamp"]/1000))
 			]
 		]);
 

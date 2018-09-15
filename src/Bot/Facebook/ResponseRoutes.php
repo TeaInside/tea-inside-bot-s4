@@ -23,11 +23,12 @@ trait ResponseRoutes
 
 
 		$this->set(function () use ($txt) {
-			var_dump("ping");
 			return [
 				(bool) preg_match("/^(\!|\/|\~|\.)?ping$/", $txt),
 				[]
 			];
 		}, "Ping@ping");
+
+		
 	}
 }
