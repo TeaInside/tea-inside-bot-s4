@@ -15,10 +15,19 @@ trait ResponseRoutes
 	 */
 	private function buildRoutes(): void
 	{
-		$this->set(function () {
-			
-		}, function () {
-			
-		});
+		if (isset($this->data["message"]["text"])) {
+			$txt = $this->data["message"]["text"];
+		} else {
+			$txt = null;
+		}
+
+
+		$this->set(function () use ($txt) {
+			var_dump("ping");
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)ping$/", $d["text"]),
+				[]
+			];
+		}, "Ping@ping");
 	}
 }

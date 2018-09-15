@@ -30,8 +30,14 @@ final class Bot
 		if (isset($this->data["entry"]) && is_array($this->data["entry"])) {
 			var_dump($this->data);
 			foreach ($this->data["entry"] as $key => $v) {
-				$st = new Response($v);
-				$st->run();
+				if (isset($v["messaging"]) && is_array($v["messaging"])) {
+					foreach ($v["messaging"] as $vv) {
+						if (isset($vv["message"]["text"])) {
+							$st = new Response($vv);
+							$st->run();
+						}
+					}
+				}
 			}
 		}
 	}

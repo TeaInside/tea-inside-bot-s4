@@ -13,16 +13,16 @@ use Bot\Facebook\Contracts\Response as ResponseContract;
 abstract class ResponseFoundation implements ResponseContract
 {
 	/**
-	 * @var \Bot\Facebook\Data
+	 * @var array
 	 */
 	protected $data;
 
 	/**
-	 * @param \Bot\Facebook\Data $data
+	 * @param array $data
 	 *
 	 * Constructor.
 	 */
-	public function __construct(Data $data)
+	public function __construct(array $data)
 	{
 		$this->data = $data;
 	}
