@@ -25,7 +25,7 @@ class Ping extends ResponseFoundation
 				"id" => $this->data["sender"]["id"]
 			],
 			"message" => [
-				"text" => "Ping OK!\n".(time() - ($this->data["timestamp"]/1000))
+				"text" => "Ping OK!\n".round(time() - ($this->data["timestamp"]/1000), 5)." s"
 			]
 		]);
 
