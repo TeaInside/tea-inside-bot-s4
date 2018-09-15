@@ -49,7 +49,7 @@ final class Response
 					if (is_string($route[1])) {
 						$route[1] = explode("@", $route[1]);
 						if (count($route[1]) === 2) {
-							$route[1][0] = "\\Bot\\Telegram\\Responses\\".$route[1][0];
+							$route[1][0] = "\\Bot\\Facebook\\Responses\\".$route[1][0];
 							$route[1][0] = new $route[1][0]($this->data);
 							if (call_user_func_array(
 								[
