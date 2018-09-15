@@ -34,6 +34,6 @@ trait ResponseRoutes
 				(bool) preg_match("/^(\!|\/|\~|\.)?help$/Usi", $txt),
 				[]
 			];
-		}, "Help@help");		
+		}, "Help@menu");		
 	}
 }

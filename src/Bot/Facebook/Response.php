@@ -41,13 +41,13 @@ final class Response
 	 */
 	public function run(): void
 	{
-		$st = true;
+		$stdd = true;
 		$this->buildRoutes();
 		foreach ($this->routes as $key => $route) {
 			$route[0] = $route[0]($this->data);
 			if (isset($route[0], $route[0][1]) && is_array($route[0][1])) {
 				if ($route[0][0]) {
-					$st = false;
+					$stdd = false;
 					if (is_string($route[1])) {
 						$route[1] = explode("@", $route[1]);
 						if (count($route[1]) === 2) {
@@ -74,7 +74,7 @@ final class Response
 			}
 		}
 
-		if ($st) {
+		if ($stdd) {
 			// FALLBACK AI
 		}
 	}
