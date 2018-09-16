@@ -32,6 +32,11 @@ final class Bot
 				if (isset($v["messaging"]) && is_array($v["messaging"])) {
 					foreach ($v["messaging"] as $vv) {
 						if (isset($vv["message"]["text"])) {
+							Singleton::init(
+								[
+									"lang" => [Lang::class, [$vv]]
+								]
+							);
 							$st = new Response($vv);
 							$st->run();
 						}

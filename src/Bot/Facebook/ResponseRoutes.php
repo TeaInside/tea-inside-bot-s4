@@ -60,5 +60,25 @@ trait ResponseRoutes
 				[]
 			];
 		}, "Calculator@calc");
+
+		/**
+		 * Time cmd
+		 */
+		$this->set(function () use ($txt) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)?time/Usi", $txt),
+				[]
+			];
+		}, "Time@showTime");
+
+		/**
+		 * Translate
+		 */
+		$this->set(function () use ($txt) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)?tr/Usi", $txt),
+				[]
+			];
+		}, "Translate@googleTranslate");
 	}
 }

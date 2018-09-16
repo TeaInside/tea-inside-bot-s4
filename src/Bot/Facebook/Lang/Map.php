@@ -11,6 +11,7 @@ namespace Bot\Facebook\Lang;
 final class Map
 {
 	public static $map = [
-		"help.general" => En\Help\General::class
+		"help.general" => En\Help\General::class,
+		"translate.usage" => En\Translate\Usage::class
 	];
 }
