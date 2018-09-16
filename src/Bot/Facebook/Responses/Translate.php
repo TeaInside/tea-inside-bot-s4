@@ -22,7 +22,6 @@ class Translate extends ResponseFoundation
 	public function googleTranslate(): bool
 	{
 		defined("data") or define("data", STORAGE_PATH);
-		var_dump($this->data["message"]["text"]);
 		if (preg_match("/^(?:\!|\/|\~|\.)?(?:t)(?:r|l)(?:[\s\n]+)([a-z]{2}|auto|zh-cn|zh-tw)(?:[\s\n]+)([a-z]{2}|zh-cn|zh-tw)(?:[\s\n]+)?(.*)?$/Usi", $this->data["message"]["text"], $m)) {
 			if (isset($m[3])) {
 
@@ -60,7 +59,6 @@ class Translate extends ResponseFoundation
 				"text" => $lang->get("translate.usage.basic"),
 			]
 		]);
-		var_dump(111,111,$out["out"]);
 		return true;
 	}
 }
