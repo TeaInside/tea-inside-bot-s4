@@ -34,9 +34,9 @@ class Translate extends ResponseFoundation
 					$st = $e->getMessage()."\nSee available languages at: https://github.com/ammarfaizi2/GoogleTranslate/blob/master/README.md";
 				}
 				
-				$st = new Exe(TOKENS["EsTehkuSegar"]);
+				$std = new Exe(TOKENS["EsTehkuSegar"]);
 
-				$out = $st->post("v2.6/me/messages", [
+				$out = $std->post("v2.6/me/messages", [
 					"recipient" => [
 						"id" => $this->data["sender"]["id"]
 					],
@@ -44,7 +44,6 @@ class Translate extends ResponseFoundation
 						"text" => $st
 					]
 				]);
-				var_dump($out);
 				return true;
 			}
 		}
@@ -61,7 +60,7 @@ class Translate extends ResponseFoundation
 				"text" => $lang->get("translate.usage.basic"),
 			]
 		]);
-		var_dump($out);
+		var_dump(111,111,$out["out"]);
 		return true;
 	}
 }
