@@ -22,7 +22,7 @@ class Translate extends ResponseFoundation
 	public function googleTranslate(): bool
 	{
 		defined("data") or define("data", STORAGE_PATH);
-
+		var_dump($this->data["message"]["text"]);
 		if (preg_match("/^(?:\!|\/|\~|\.)?(?:t)(?:r|l)(?:[\s\n]+)([a-z]{2}|auto|zh-cn|zh-tw)(?:[\s\n]+)([a-z]{2}|zh-cn|zh-tw)(?:[\s\n]+)?(.*)?$/Usi", $this->data["message"]["text"], $m)) {
 			if (isset($m[3])) {
 
