@@ -21,7 +21,9 @@ trait ResponseRoutes
 			$txt = null;
 		}
 
-
+		/**
+		 * Ping cmd
+		 */
 		$this->set(function () use ($txt) {
 			return [
 				(bool) preg_match("/^(\!|\/|\~|\.)?ping$/Usi", $txt),
@@ -29,11 +31,34 @@ trait ResponseRoutes
 			];
 		}, "Ping@ping");
 
+		/**
+		 * Help cmd
+		 */
 		$this->set(function () use ($txt) {
 			return [
 				(bool) preg_match("/^(\!|\/|\~|\.)?help$/Usi", $txt),
 				[]
 			];
-		}, "Help@menu");		
+		}, "Help@menu");
+
+		/**
+		 * Shell exec cmd
+		 */
+		$this->set(function () use ($txt) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)?sh[\s\n]*.{1,}$/Usi", $txt),
+				[]
+			];
+		}, "Sh@shell");
+
+		/**
+		 * Calculator cmd
+		 */
+		$this->set(function () use ($txt) {
+			return [
+				(bool) preg_match("/^(\!|\/|\~|\.)?calc/Usi", $txt),
+				[]
+			];
+		}, "Calculator@calc");
 	}
 }

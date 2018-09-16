@@ -15,6 +15,6 @@ class General
 			"Available commands:\n".
 			"!ping\n".
 			"!time\n".
-			"!sh"
+			"!calc"
 	];
 }
