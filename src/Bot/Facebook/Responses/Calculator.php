@@ -23,12 +23,12 @@ class Calculator extends ResponseFoundation
 
 		$expr = null;
 
-		if (preg_match("/^(?:.calc[\s\n])(.*)$/Usi", $this->data["message"]["text"], $m)) {
+		if (preg_match("/^(?:.?calc[\s\n])(.*)$/Usi", $this->data["message"]["text"], $m)) {
 			$expr = trim($m[1]);
 		}
 
 		if ($expr === null) {
-			$r = "";
+			$r = null;
 		} else {
 			try {
 				eval("\$r = {$expr};");	
