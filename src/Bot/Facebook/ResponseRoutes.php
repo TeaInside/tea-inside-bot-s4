@@ -76,9 +76,9 @@ trait ResponseRoutes
 		 * 
 		 * Example: ["/tr en id How are you?", "!tr en id What time is it?"]
 		 */
-		$this->set(function($d) {
+		$this->set(function($d) use ($txt) {
 			return [
-				(bool) preg_match("/^(\!|\/|\~|\.)?t(l|r)($|[\s\n])/Usi", $d["text"]),
+				(bool) preg_match("/^(\!|\/|\~|\.)?t(l|r)($|[\s\n])/Usi", $txt),
 				[]
 			];
 		}, "Translate@googleTranslate");
