@@ -36,7 +36,7 @@ class Translate extends ResponseFoundation
 				
 				$st = new Exe(TOKENS["EsTehkuSegar"]);
 
-				$st->post("v2.6/me/messages", [
+				$out = $st->post("v2.6/me/messages", [
 					"recipient" => [
 						"id" => $this->data["sender"]["id"]
 					],
@@ -44,6 +44,7 @@ class Translate extends ResponseFoundation
 						"text" => $st
 					]
 				]);
+				var_dump($out);
 				return true;
 			}
 		}
@@ -52,7 +53,7 @@ class Translate extends ResponseFoundation
 		$lang = $singleton->get("lang");
 		unset($singleton);
 		$st = new Exe(TOKENS["EsTehkuSegar"]);
-		$st->post("v2.6/me/messages", [
+		$out = $st->post("v2.6/me/messages", [
 			"recipient" => [
 				"id" => $this->data["sender"]["id"]
 			],
@@ -60,6 +61,7 @@ class Translate extends ResponseFoundation
 				"text" => $lang->get("translate.usage.basic"),
 			]
 		]);
+		var_dump($out);
 		return true;
 	}
 }
