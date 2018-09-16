@@ -72,11 +72,13 @@ trait ResponseRoutes
 		}, "Time@showTime");
 
 		/**
-		 * Translate
+		 * Translate command
+		 * 
+		 * Example: ["/tr en id How are you?", "!tr en id What time is it?"]
 		 */
-		$this->set(function () use ($txt) {
+		$this->set(function($d) {
 			return [
-				(bool) preg_match("/^(\!|\/|\~|\.)?tr/Usi", $txt),
+				(bool) preg_match("/^(\!|\/|\~|\.)?t(l|r)($|[\s\n])/Usi", $d["text"]),
 				[]
 			];
 		}, "Translate@googleTranslate");
