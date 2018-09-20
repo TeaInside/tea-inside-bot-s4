@@ -18,3 +18,5 @@
 /config/telegram/webhook_key.php
 
 /config/facebook/hub_verify_token.php
+
+/installed.state
