@@ -491,7 +491,7 @@ class Kulgram extends ResponseFoundation
 
 			$mpdf = new Mpdf(
 				[
-					"tempDir" => "/tmp",
+					"tempDir" => STORAGE_PATH."/tmp_dir",
 					"mode" => "utf-8"
 				]
 			);

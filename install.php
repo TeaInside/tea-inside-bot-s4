@@ -14,6 +14,7 @@ function configCpy()
 	];
 
 	foreach ($listConfig as $config) {
+		$config = str_replace("/", DIRECTORY_SEPARATOR, $config);
 		printf("Copying %s.example to %s...", $config, $config);
 		if (copy($config.".example", $config)) {
 			printf("OK\n");
@@ -23,3 +24,4 @@ function configCpy()
 	}
 }
 
+configCpy();
