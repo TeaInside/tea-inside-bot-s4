@@ -38,9 +38,11 @@ class Virtualizor extends ResponseFoundation
 			);
 		}
 
+		$result =  trim($st->getResult());
+
 		Exe::sendMessage(
 			[
-				"text" => $st->getResult(),
+				"text" => $result === "" ? "~" : $result,
 				"chat_id" => $this->data["chat_id"],
 				"reply_to_message_id" => $this->data["msg_id"],
 			]
