@@ -77,5 +77,45 @@ trait ResponseRoutes
 				[]
 			];
 		}, "Translate@googleTranslatetoRepliedMessage");
+
+
+		$this->set(function($d) {
+
+			$s3 = substr($d["text"], 0, 3);
+			$s4 = substr($d["text"], 0, 4);
+			$s5 = substr($d["text"], 0, 5);
+			$s6 = substr($d["text"], 0, 6);
+			$s7 = substr($d["text"], 0, 7);
+			$s8 = substr($d["text"], 0, 8);
+			$s9 = substr($d["text"], 0, 9);
+			
+			if (
+				$s5 === "<?php" 	||
+				
+				$s5 === "<?cpp" 	||
+				$s5 === "<?c++" 	||
+				$s5 === "<?g++" 	||
+
+				$s5 === "<?gcc" 	||
+				$s3 === "<?c" 		||
+
+				$s4 === "<?js" 		||
+				$s6 === "<?node"	||
+				$s8 === "<?nodejs"	||
+
+				$s4 === "<?pl" 		||
+				$s6 === "<?perl" 	||
+
+				$s4 === "<?rb" 		||
+				$s6 === "<?ruby" 	||
+
+				$s4 === "<?cr" 		||
+				$s9 === "<?crystal" ||
+
+				$s6 === "<?java"
+			) {
+				return [true, []];
+			}
+		}, "Virtualizor@virt");
 	}
 }
