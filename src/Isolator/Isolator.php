@@ -19,9 +19,9 @@ final class Isolator
 	private $cmd;
 
 	/**
-	 * @var int
+	 * @var string
 	 */
-	private $boxId = 0;
+	private $boxId = "0";
 
 	/**
 	 * @var string
@@ -31,7 +31,7 @@ final class Isolator
 	/**
 	 * @var string
 	 */
-	private $boxDir = "/var/local/lib/isolate/0/box";
+	private $boxDir;
 
 	/**
 	 * @var string
@@ -76,6 +76,36 @@ final class Isolator
 	/**
 	 * @var string
 	 */
+	private $bootPath;
+
+	/**
+	 * @var string
+	 */
+	private $dockerdPath;
+
+	/**
+	 * @var string
+	 */
+	private $lostPlusFoundPath;
+
+	/**
+	 * @var string
+	 */
+	private $mediaPath;
+
+	/**
+	 * @var string
+	 */
+	private $optPath;
+
+	/**
+	 * @var string
+	 */
+	private $systemContainerPath;
+
+	/**
+	 * @var string
+	 */
 	private $stdoutFile;
 
 	/**
@@ -111,7 +141,12 @@ final class Isolator
 	/**
 	 * @var int
 	 */
-	private $maxStack = 20480;
+	private $maxStack = 2097152;
+
+	/**
+	 * @var int
+	 */
+	private $maxWrite = 1048576;
 
 	/**
 	 * @param string $boxId
@@ -121,28 +156,41 @@ final class Isolator
 	 */
 	public function __construct(int $boxId)
 	{
-		$this->boxId = $boxId;
+		$this->boxId = (string)$boxId;
 		$this->uid = "6".str_repeat("0", 4 - strlen($this->boxId)).$this->boxId;
 
 		$this->buildRoot();
 
-		$this->tmpPath = ISOLATOR_USER_DIR."/u".$this->uid."/tmp";
-		$this->homePath = ISOLATOR_USER_DIR."/u".$this->uid."/home";
-		$this->etcPath = ISOLATOR_USER_DIR."/u".$this->uid."/etc";
-
-		$this->absoluteStdoutFile = ISOLATOR_USER_DIR."/u".$this->uid."/tmp/.stdout";
-		$this->absoluteStderrFile = ISOLATOR_USER_DIR."/u".$this->uid."/tmp/.stderr";
-
 		$this->stdoutFile = "/tmp/.stdout";
 		$this->stderrFile = "/tmp/.stderr";
+		$this->tmpPath = ISOLATOR_USER_DIR."/u{$this->uid}/tmp";
+		$this->etcPath = ISOLATOR_USER_DIR."/u{$this->uid}/etc";
+		$this->optPath = ISOLATOR_USER_DIR."/u{$this->uid}/opt";
+		$this->mntPath = ISOLATOR_USER_DIR."/u{$this->uid}/mnt";
+		$this->bootPath = ISOLATOR_USER_DIR."/u{$this->uid}/boot";
+		$this->sbinPath = ISOLATOR_USER_DIR."/u{$this->uid}/sbin";
+		$this->homePath = ISOLATOR_USER_DIR."/u{$this->uid}/home";
+		$this->dockerdPath = ISOLATOR_USER_DIR."/u{$this->uid}/dockerd";
+		$this->lostPlusFoundPath = ISOLATOR_USER_DIR."/u{$this->uid}/lost+found";
+		$this->absoluteStdoutFile = ISOLATOR_USER_DIR."/u{$this->uid}/tmp/.stdout";
+		$this->absoluteStderrFile = ISOLATOR_USER_DIR."/u{$this->uid}/tmp/.stderr";
+		$this->systemContainerPath = ISOLATOR_USER_DIR."/u{$this->uid}/system-container";
 
 		file_put_contents($this->absoluteStdoutFile, "");
 		file_put_contents($this->absoluteStderrFile, "");
-		shell_exec("chmod -R 777 ".ISOLATOR_USER_DIR."/u".$this->uid."/tmp");
-		shell_exec("chmod -R 000 ".ISOLATOR_USER_DIR."/u".$this->uid."/system-container");
+
+		shell_exec("chmod -R 777 ".ISOLATOR_USER_DIR."/u{$this->uid}/tmp");
+		shell_exec("chmod -R 000 ".ISOLATOR_USER_DIR."/u{$this->uid}/system-container");
 
 		$scan = scandir("/etc");
-		unset($scan[0], $scan[1], $scan[array_search("passwd", $scan)]);
+
+		unset(
+			$scan[0], 
+			$scan[1], 
+			$scan[array_search("passwd", $scan)],
+			$scan[array_search("shadow", $scan)]
+		);
+
 		foreach ($scan as $file) {
 			if (! @readlink($f = $this->etcPath."/".$file)) {
 				shell_exec("sudo ln -sf /parent_etc/".$file." ".$f);
@@ -174,13 +222,44 @@ geoclue:x:103:105::/var/lib/geoclue:/usr/sbin/nologin
 syslog:x:104:108::/home/syslog:/bin/false
 _apt:x:105:65534::/nonexistent:/bin/false
 messagebus:x:106:110::/var/run/dbus:/bin/false
-uuidd:x:107:111::/run/uuidd:/bin/false
-u{$this->uid}:x:{$this->uid}:{$this->uid}:u{$this->uid},,,:/home/u{$this->uid}");
+uuidd:x:107:111::/ru1n/uuidd:/bin/false
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+u{$this->uid}:x:{$this->uid}:{$this->uid}:u{$this->uid},,,:/home/u{$this->uid}:/bin/bash");
 		}
 
-		if (! is_dir($this->boxDir = $d = "/var/local/lib/isolate/".$this->boxId."/box")) {
-			shell_exec("/usr/local/bin/isolate --box-id=".$this->boxId." --init");
-			shell_exec("sudo mkdir -p ".$d);
+		if (!file_exists($this->etcPath."/shadow")) {
+			file_put_contents($this->etcPath."/shadow", "root:x:17800:0:99999:7:::
+daemon:x:17683:0:99999:7:::
+bin:x:17683:0:99999:7:::
+sys:x:17683:0:99999:7:::
+sync:x:17683:0:99999:7:::
+games:x:17683:0:99999:7:::
+man:x:17683:0:99999:7:::
+lp:x:17683:0:99999:7:::
+mail:x:17683:0:99999:7:::
+news:x:17683:0:99999:7:::
+uucp:x:17683:0:99999:7:::
+proxy:x:17683:0:99999:7:::
+www-data:x:17683:0:99999:7:::
+backup:x:17683:0:99999:7:::
+list:x:17683:0:99999:7:::
+irc:x:17683:0:99999:7:::
+gnats:x:17683:0:99999:7:::
+systemd-timesync:x:17683:0:99999:7:::
+systemd-network:x:17683:0:99999:7:::
+systemd-resolve:x:17683:0:99999:7:::
+geoclue:x:17683:0:99999:7:::
+syslog:x:17683:0:99999:7:::
+_apt:x:17683:0:99999:7:::
+messagebus:x:17683:0:99999:7:::
+uuidd:x:17683:0:99999:7:::
+nobody:x:17683:0:99999:7:::
+u{$this->uid}:x:17683:0:99999:7:::");
+		}
+
+		if (! is_dir($this->boxDir = "/var/local/lib/isolate/{$this->boxId}/box")) {
+			shell_exec("/usr/local/bin/isolate --box-id={$this->boxId} --init");
+			shell_exec("sudo mkdir -p {$this->boxDir}");
 		}
 	}
 
@@ -199,7 +278,7 @@ u{$this->uid}:x:{$this->uid}:{$this->uid}:u{$this->uid},,,:/home/u{$this->uid}")
 					$st["map"][((string)$str)] = $st["next_id"];
 					$st["next_id"]++;
 					file_put_contents(ISOLATOR_DIR."/box_id_map", json_encode($st, 128));
-					return (int)($st["next_id"] - 1);
+					return $st["next_id"] - 1;
 				}
 			}
 		}
@@ -220,37 +299,126 @@ u{$this->uid}:x:{$this->uid}:{$this->uid}:u{$this->uid},,,:/home/u{$this->uid}")
 		foreach(
 			[
 				$f,
-				$f."/home",
-				$f."/boot",
-				$f."/cdrom",
-				$f."/opt",
-				$f."/mnt",
-				$f."/srv",
-				$f."/sbin",
-				$f."/var",
-				$f."/sys",
-				$f."/root",
-				$f."/run",
-				$f."/tmp",
-				$f."/etc",
-				$f."/media",
-				$f."/lost+found",
-				$f."/dockerd",
-				$f."/system-container"
+				"{$f}/opt",
+				"{$f}/mnt",
+				"{$f}/srv",
+				"{$f}/var",
+				"{$f}/sys",
+				"{$f}/run",
+				"{$f}/tmp",
+				"{$f}/etc",
+				"{$f}/home",
+				"{$f}/boot",
+				"{$f}/sbin",
+				"{$f}/root",
+				"{$f}/media",
+				"{$f}/cdrom",
+				"{$f}/dockerd",
+				"{$f}/lost+found",
+				"{$f}/system-container"
 			] as $dir
 		) {
 			is_dir($dir) or mkdir($dir);
 		}
 
-		is_dir($f."/home/ubuntu") or shell_exec("sudo cp -rf /etc/skel {$f}/home/ubuntu");
-		is_dir($f."/home/u{$this->uid}") or shell_exec("sudo cp -rf /etc/skel {$f}/home/u{$this->uid}");
-		is_dir($f."/home/u{$this->uid}/scripts") or mkdir($f."/home/u{$this->uid}/scripts");
+		is_dir("{$f}/home/ubuntu") or shell_exec("sudo cp -rf /etc/skel {$f}/home/ubuntu");
+		is_dir("{$f}/home/u{$this->uid}") or shell_exec("sudo cp -rf /etc/skel {$f}/home/u{$this->uid}");
+		is_dir("{$f}/home/u{$this->uid}/scripts") or mkdir("{$f}/home/u{$this->uid}/scripts");
 		
 		shell_exec("chmod -R 755 {$f}/home/u{$this->uid}");
 		shell_exec("chown -R {$this->uid}:{$this->uid} {$f}/home/u{$this->uid}");
 	}
 
 	/**
+	 * @param string $cmd
+	 * @return void
+	 */
+	private function buildCmd(string $cmd): void
+	{
+		$this->isolateCmd = 
+			"/usr/local/bin/isolate ".
+			$this->param("dir").
+			$this->param("env").
+			$this->param("chdir").
+			$this->param("stdout").
+			$this->param("stderr").
+			$this->param("maxStack").
+			$this->param("sharenet").
+			$this->param("processes").
+			$this->param("extraTime").
+			$this->param("memoryLimit").
+			$this->param("maxWallTime").
+			$this->param("maxExecutionTime").
+			"--box-id={$this->boxId} --run -- /bin/sh -c ".
+			escapeshellarg($cmd)." 2>&1";
+	}
+
+	/**
+	 * @param string $prm
+	 * @return string
+	 */
+	private function param(string $prm): string
+	{
+		$param = "";
+		switch ($prm) {
+			case "dir":
+				$param.= escapeshellarg("--dir=/mnt={$this->mntPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/opt={$this->optPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/tmp={$this->tmpPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/etc={$this->etcPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/boot={$this->bootPath}:rw")." ";
+				$param = escapeshellarg("--dir=/home={$this->homePath}:rw")." ";
+				$param = escapeshellarg("--dir=/media={$this->mediaPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/dockerd={$this->dockerdPath}:maybe")." ";
+				$param = escapeshellarg("--dir=/lost+found={$this->lostPlusFoundPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/system-container={$this->systemContainerPath}")." ";
+				$param.= "--dir=/parent_etc=/etc:rw ";
+				$param.= "--dir=/var=/var:rw ";
+				$param.= "--dir=/lib=/lib:rw ";
+				break;
+			case "stdout":
+				$param = escapeshellarg("--stdout={$this->stdoutFile}");
+				break;
+			case "stderr":
+				// $param = "--stderr={$this->stderrFile}";
+				$param = "--stderr-to-stdout";
+				break;
+			case "processes":
+				$param = "--processes={$this->maxProcesses}";
+				break;
+			case "memoryLimit":
+				$param = "--mem={$this->memoryLimit}";
+				break;
+			case "maxWallTime":
+				$param = "--wall-time={$this->maxWallTime}";
+				break;
+			case "maxExecutionTime":
+				$param = "--time={$this->maxExecutionTime}";
+				break;
+			case "extraTime":
+				$param = "--extra-time={$this->extraTime}";
+				break;
+			case "sharenet":
+				$param = $this->sharenet ? "--share-net" : "";
+				break;
+			case "chdir":
+				$param = "--chdir=/home/u".$this->uid;
+				break;
+			case "env":
+				$param = "--full-env ";
+				$param.= "--env=TMPDIR=/tmp";
+				break;
+			case "maxStack":
+				$param = "--stack={$this->maxStack}";
+				break;
+			default:
+				break;
+		}
+
+		return $param !== "" ? $param." " : "";
+	}
+
+		/**
 	 * @param int $n
 	 * @return void
 	 */
@@ -296,12 +464,32 @@ u{$this->uid}:x:{$this->uid}:{$this->uid}:u{$this->uid},,,:/home/u{$this->uid}")
 	}
 
 	/**
+	 * @param int $size
+	 * @return void
+	 */
+	public function maxStack(int $size): void
+	{
+		$this->maxStack = $size;
+	}
+
+	/**
 	 * @param bool $enable
 	 * @return void
 	 */
 	public function sharenet(bool $enable): void
 	{
 		$this->sharenet = $enable;
+	}
+
+	/**
+	 * Max size (in KB) of files that can be created.
+	 *
+	 * @param int $size
+	 * @return void
+	 */
+	public function maxWrite(int $size): void
+	{
+		$this->maxWrite = $size;
 	}
 
 	/**
@@ -336,86 +524,5 @@ u{$this->uid}:x:{$this->uid}:{$this->uid}:u{$this->uid},,,:/home/u{$this->uid}")
 	public function getResult(): string
 	{
 		return file_get_contents($this->absoluteStdoutFile);
-	}
-
-	/**
-	 * @param string $cmd
-	 * @return void
-	 */
-	private function buildCmd(string $cmd): void
-	{
-		$this->isolateCmd = 
-			"/usr/local/bin/isolate ".
-			$this->param("dir").
-			$this->param("stdout").
-			$this->param("stderr").
-			$this->param("processes").
-			$this->param("memoryLimit").
-			$this->param("maxWallTime").
-			$this->param("maxExecutionTime").
-			$this->param("extraTime").
-			$this->param("sharenet").
-			$this->param("chdir").
-			$this->param("env").
-			"--box-id={$this->boxId} --run -- /bin/sh -c ".escapeshellarg($cmd).
-			" 2>&1";
-	}
-
-	/**
-	 * @param string $prm
-	 * @return string
-	 */
-	private function param(string $prm): string
-	{
-		$param = "";
-		switch ($prm) {
-			case "dir":
-				$param = escapeshellarg("--dir=/home=".$this->homePath.":rw")." ";
-				$param.= escapeshellarg("--dir=/tmp=".$this->tmpPath.":rw")." ";
-				$param.= escapeshellarg("--dir=/etc=".$this->etcPath.":rw")." ";
-				$param.= escapeshellarg("--dir=/parent_etc=/etc:rw")." ";
-				$param.= escapeshellarg("--dir=/var=/var:rw")." ";
-				$param.= escapeshellarg("--dir=/lib=/lib:rw");
-				break;
-			case "stdout":
-				$param = escapeshellarg("--stdout={$this->stdoutFile}");
-				break;
-			case "stderr":
-				// $param = "--stderr={$this->stderrFile}";
-				$param = "--stderr-to-stdout";
-				break;
-			case "processes":
-				$param = "--processes={$this->maxProcesses}";
-				break;
-			case "memoryLimit":
-				$param = "--mem={$this->memoryLimit}";
-				break;
-			case "maxWallTime":
-				$param = "--wall-time={$this->maxWallTime}";
-				break;
-			case "maxExecutionTime":
-				$param = "--time={$this->maxExecutionTime}";
-				break;
-			case "extraTime":
-				$param = "--extra-time={$this->extraTime}";
-				break;
-			case "sharenet":
-				$param = $this->sharenet ? "--share-net" : "";
-				break;
-			case "chdir":
-				$param = "--chdir=/home/u".$this->uid;
-				break;
-			case "env":
-				$param = "--full-env ";
-				$param.= "--env=TMPDIR=/tmp";
-				break;
-			case "maxStack":
-				$param = "--stack={$this->maxStack}";
-				break;
-			default:				
-				break;
-		}
-
-		return $param === "" ? "" : $param." ";
 	}
 }
