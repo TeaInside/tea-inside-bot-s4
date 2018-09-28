@@ -81,6 +81,7 @@ trait ResponseRoutes
 
 		$this->set(function($d) {
 
+			$s2 = substr($d["text"], 0, 2);
 			$s3 = substr($d["text"], 0, 3);
 			$s4 = substr($d["text"], 0, 4);
 			$s5 = substr($d["text"], 0, 5);
@@ -90,6 +91,12 @@ trait ResponseRoutes
 			$s9 = substr($d["text"], 0, 9);
 			
 			if (
+				$s2 === "sh"		||
+				$s3 === "!sh"		||
+				$s3 === "/sh"		||
+				$s3 === "~sh"		||
+				$s3 === ".sh"		||
+
 				$s5 === "<?php" 	||
 				
 				$s5 === "<?cpp" 	||

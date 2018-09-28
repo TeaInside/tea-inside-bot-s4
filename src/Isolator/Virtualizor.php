@@ -4,6 +4,7 @@ namespace Isolator;
 
 use Exception;
 use Isolator\Interpreter\Php;
+use Isolator\Interpreter\Bash;
 
 /**
  * @author Ammar Faizi <ammarfaizi2@gmail.com> https://www.facebook.com/ammarfaizi2
@@ -61,7 +62,9 @@ final class Virtualizor
 			case "php":
 				$st = new Php($code, $this->boxId);
 				break;
-			
+			case "bash":
+				$st = new Bash($code, $this->boxId);
+				break;
 			default:
 				break;
 		}
