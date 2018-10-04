@@ -141,11 +141,6 @@ final class Isolator
 	/**
 	 * @var int
 	 */
-	private $maxStack = 2097152;
-
-	/**
-	 * @var int
-	 */
 	private $maxWrite = 1048576;
 
 	/**
@@ -174,7 +169,7 @@ final class Isolator
 		$this->lostPlusFoundPath = ISOLATOR_USER_DIR."/u{$this->uid}/lost+found";
 		$this->absoluteStdoutFile = ISOLATOR_USER_DIR."/u{$this->uid}/tmp/.stdout";
 		$this->absoluteStderrFile = ISOLATOR_USER_DIR."/u{$this->uid}/tmp/.stderr";
-		$this->systemContainerPath = ISOLATOR_USER_DIR."/u{$this->uid}/system-container";
+		$this->systemContainerPath = ISOLATOR_USER_DIR."/u{$this->uid}/system_container";
 
 		file_put_contents($this->absoluteStdoutFile, "");
 		file_put_contents($this->absoluteStderrFile, "");
@@ -315,7 +310,7 @@ u{$this->uid}:x:17683:0:99999:7:::");
 				"{$f}/cdrom",
 				"{$f}/dockerd",
 				"{$f}/lost+found",
-				"{$f}/system-container"
+				"{$f}/system_container"
 			] as $dir
 		) {
 			is_dir($dir) or mkdir($dir);
@@ -342,14 +337,13 @@ u{$this->uid}:x:17683:0:99999:7:::");
 			$this->param("chdir").
 			$this->param("stdout").
 			$this->param("stderr").
-			$this->param("maxStack").
 			$this->param("sharenet").
 			$this->param("processes").
 			$this->param("extraTime").
 			$this->param("memoryLimit").
 			$this->param("maxWallTime").
 			$this->param("maxExecutionTime").
-			"--box-id={$this->boxId} --run -- /bin/sh -c ".
+			"--box-id={$this->boxId} -vvv --run -- /bin/sh -c ".
 			escapeshellarg($cmd)." 2>&1";
 	}
 
@@ -362,19 +356,17 @@ u{$this->uid}:x:17683:0:99999:7:::");
 		$param = "";
 		switch ($prm) {
 			case "dir":
-				$param.= escapeshellarg("--dir=/mnt={$this->mntPath}:rw")." ";
 				$param.= escapeshellarg("--dir=/opt={$this->optPath}:rw")." ";
 				$param.= escapeshellarg("--dir=/tmp={$this->tmpPath}:rw")." ";
 				$param.= escapeshellarg("--dir=/etc={$this->etcPath}:rw")." ";
 				$param.= escapeshellarg("--dir=/boot={$this->bootPath}:rw")." ";
-				$param = escapeshellarg("--dir=/home={$this->homePath}:rw")." ";
-				$param = escapeshellarg("--dir=/media={$this->mediaPath}:rw")." ";
+				$param.= escapeshellarg("--dir=/home={$this->homePath}:rw")." ";
 				$param.= escapeshellarg("--dir=/dockerd={$this->dockerdPath}:maybe")." ";
-				$param = escapeshellarg("--dir=/lost+found={$this->lostPlusFoundPath}:rw")." ";
-				$param.= escapeshellarg("--dir=/system-container={$this->systemContainerPath}")." ";
+				$param.= escapeshellarg("--dir=/system_container/par={$this->systemContainerPath}")." ";
 				$param.= "--dir=/parent_etc=/etc:rw ";
 				$param.= "--dir=/var=/var:rw ";
 				$param.= "--dir=/lib=/lib:rw ";
+				$param.= "--dir=/bin=/bin:dev:rw ";
 				break;
 			case "stdout":
 				$param = escapeshellarg("--stdout={$this->stdoutFile}");
@@ -402,14 +394,11 @@ u{$this->uid}:x:17683:0:99999:7:::");
 				$param = $this->sharenet ? "--share-net" : "";
 				break;
 			case "chdir":
-				$param = "--chdir=/home/u".$this->uid;
+				// $param = "--chdir=/home/u{$this->uid}";
 				break;
 			case "env":
 				$param = "--full-env ";
 				$param.= "--env=TMPDIR=/tmp";
-				break;
-			case "maxStack":
-				$param = "--stack={$this->maxStack}";
 				break;
 			default:
 				break;
@@ -507,7 +496,9 @@ u{$this->uid}:x:17683:0:99999:7:::");
 	public function run(string $cmd): void
 	{
 		$this->buildCmd($cmd);
+		var_dump($this->isolateCmd);
 		$this->isolateOut = shell_exec($this->isolateCmd);
+		var_dump($this->isolateOut);
 	}
 
 	/**
