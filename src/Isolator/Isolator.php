@@ -343,7 +343,7 @@ u{$this->uid}:x:17683:0:99999:7:::");
 			$this->param("memoryLimit").
 			$this->param("maxWallTime").
 			$this->param("maxExecutionTime").
-			"--box-id={$this->boxId} -vvv --run -- /bin/sh -c ".
+			"--box-id={$this->boxId} --run -- /bin/sh -c ".
 			escapeshellarg($cmd)." 2>&1";
 	}
 
@@ -496,9 +496,7 @@ u{$this->uid}:x:17683:0:99999:7:::");
 	public function run(string $cmd): void
 	{
 		$this->buildCmd($cmd);
-		var_dump($this->isolateCmd);
 		$this->isolateOut = shell_exec($this->isolateCmd);
-		var_dump($this->isolateOut);
 	}
 
 	/**
