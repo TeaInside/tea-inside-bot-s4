@@ -52,7 +52,8 @@ class Virtualizor extends ResponseFoundation
 					"bash"
 				);
 				$data["parse_mode"] = "HTML";
-				$result = "<code>".htmlspecialchars(trim($st->getResult()), ENT_QUOTES, "UTF-8")."</code>";
+				$result = trim($st->getResult());
+				$result = "<code>".($result === "" ? "~" : htmlspecialchars($result, ENT_QUOTES, "UTF-8"))."</code>";
 			} else {
 				unset($st);
 				return false;
