@@ -61,7 +61,9 @@ final class Response
 								break;
 							}
 						} else {
-							throw new ResponseException("Invalid action \"".implode("@", $route[1])."\"");
+							throw new ResponseException(
+								"Invalid action \"".implode("@", $route[1])."\""
+							);
 						}
 					} elseif ($route[1] instanceof Closure) {
 						if ($route[1](...$route[0][1])) {
