@@ -255,7 +255,7 @@ class Kulgram extends ResponseFoundation
 
 		unset($st);
 
-		$a = Exe::getChatAdministrators(["chat_id" => $this->data["group_id"]]);
+		$a = Exe::getChatAdministrators(["chat_id" => $this->data["chat_id"]]);
 		$a = json_decode($a["out"], true);
 		if (isset($a["result"])) {
 			foreach ($a["result"] as $key => $admin) {
