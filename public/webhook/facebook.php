@@ -1,3 +1,3 @@
 <?php
 
-require __DIR__."/../../connector/facebook/first.php";
+require __DIR__."/../../connector/facebook/webhook.php";
