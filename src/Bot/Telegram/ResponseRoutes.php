@@ -80,6 +80,14 @@ trait ResponseRoutes
 
 
 		$this->set(function($d) {
+			return [
+				(bool) preg_match("/^(\/|!|\.)?debug$/", $d["text"]),
+				[]
+			];
+		}, "Debug@debug");
+
+
+		$this->set(function($d) {
 
 			$s2 = substr($d["text"], 0, 2);
 			$s3 = substr($d["text"], 0, 3);
