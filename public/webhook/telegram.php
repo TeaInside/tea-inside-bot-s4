@@ -13,4 +13,4 @@ if (isset($_GET["key"])) {
 	exit("Forbidden!");
 }
 
-require __DIR__."/../../connector/telegram/first.php";
+require __DIR__."/../../connector/telegram/webhook.php";
