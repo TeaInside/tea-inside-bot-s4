@@ -14,16 +14,16 @@ jobs:
     steps:
       - checkout
       
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          - v1-dependencies-
+      # - restore_cache:
+      #     keys:
+      #     - v1-dependencies-{{ checksum "composer.json" }}
+      #     - v1-dependencies-
 
-      - run: composer install -vvv --prefer-dist
+      # - run: composer install -vvv --prefer-dist
 
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
+      # - save_cache:
+      #     paths:
+      #       - ./vendor
+      #     key: v1-dependencies-{{ checksum "composer.json" }}
 
       - run: php ~/repo/deploy.php
