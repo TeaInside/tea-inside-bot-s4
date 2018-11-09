@@ -20,11 +20,12 @@ class Debug extends ResponseFoundation
 	{
 		Exe::sendMessage(
 			[
-				"text" => json_encode($this->data->in,
+				"text" => "<pre>".htmlspecialchars(json_encode($this->data->in,
 					JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-				),
+				), ENT_QUOTES, "UTF-8")."</pre>",
 				"chat_id" => $this->data["chat_id"],
-				"reply_to_message_id" => $this->data["msg_id"]
+				"reply_to_message_id" => $this->data["msg_id"],
+				"parse_mode" => "HTML"
 			]
 		);
 
