@@ -81,10 +81,18 @@ trait ResponseRoutes
 
 		$this->set(function($d) {
 			return [
-				(bool) preg_match("/^(\/|!|\.)?debug$/", $d["text"]),
+				(bool) preg_match("/^(\/|!|\.)?debug$/Ui", $d["text"]),
 				[]
 			];
 		}, "Debug@debug");
+
+
+		$this->set(function($d) {
+			return [
+				(bool) preg_match("/^(\/|!|\.)admin$/Ui", $d["text"]),
+				[]
+			];
+		}, "Admin@call");
 
 
 		$this->set(function($d) {

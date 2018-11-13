@@ -1,4 +1,5 @@
 *.so
+*.log
 *.swo
 *.swp
 *.tmp
